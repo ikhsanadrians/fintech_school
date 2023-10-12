@@ -52,9 +52,9 @@ class UserController extends Controller
         $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
 
         $user = Auth::user();
-        $wallet = Wallet::where("users_id", Auth::user()->id)->get();
         $products = Product::all();
-
+        $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
+        // dd($wallet);
         $creditTotal = $wallet->sum('credit');
         $debitTotal = $wallet->sum('debit');
         $difference = $creditTotal - $debitTotal;

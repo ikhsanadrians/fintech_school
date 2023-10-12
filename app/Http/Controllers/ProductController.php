@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -15,6 +18,14 @@ class ProductController extends Controller
         $products = Product::all();
 
         return view('home', compact('products'));
+    }
+
+    public function clothes()
+    {
+        $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
+        $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
+        $clots = Category::where("name", "pakaian")->with("products")->get();
+        return view('clothing', compact('clots', 'transactionsKeranjang', 'transactionsBayar'));
     }
 
     /**
@@ -36,9 +47,11 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        return view("detail", compact("product"));
     }
 
     /**

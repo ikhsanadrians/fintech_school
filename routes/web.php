@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +21,14 @@ Route::get("/login", [UserController::class, 'getlogin']);
 Route::post("/login", [UserController::class, 'postLogin'])->name("login");
 Route::post("/register", [UserController::class, 'registerUser'])->name("register");
 Route::get("/register", [UserController::class, 'getRegisterUser']);
-Route::post("/logout", [UserController::class, 'logout'])->name("logout");
+Route::get("/logout", [UserController::class, 'logout'])->name("logout");
 Route::post("/", [TransactionController::class, 'addToCart'])->name("addToCart");
 Route::put("/", [TransactionController::class, 'payProduct'])->name("payProduct");
+Route::delete("/keranjang/delete", [TransactionController::class, 'cancelCart']);
 Route::get("/", [UserController::class, 'index']);
+Route::get("/history", [TransactionController::class, 'index']);
+Route::get("/history/{order_code}", [TransactionController::class, 'downloadReport']);
+Route::delete("/history", [TransactionController::class, 'clearHistoryBuy'])->name('clearHistoryBuy');
+Route::post("/topup", [WalletController::class, "topUp"])->name("topUp");
+Route::get("/clothings", [ProductController::class, "clothes"]);
+Route::get("/product/{id}", [ProductController::class, "show"]);

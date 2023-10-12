@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId("users_id")->constrained()->onDelete("CASCADE");
             $table->double("credit")->nullable();
             $table->double("debit")->nullable();
+            $table->string("status");
             $table->timestamps();
         });
     }

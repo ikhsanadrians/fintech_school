@@ -41,6 +41,9 @@ class DatabaseSeeder extends Seeder
         Category::create([
             "name" => "snack"
         ]);
+        Category::create([
+            "name" => "pakaian"
+        ]);
 
         User::create([
             "name" => "raya",
@@ -90,22 +93,51 @@ class DatabaseSeeder extends Seeder
             "categories_id" => 3,
             "stand" => 1
         ]);
+        Product::create([
+            "name" => "baju hypebeast",
+            "price" => 1000000,
+            "stock" => 10,
+            "photo" => "img://tes/bajuhypebeast",
+            "desc" => "desc baju hypebeast evos baju hypebeast",
+            "categories_id" => 4,
+            "stand" => 4
+        ]);
+        Product::create([
+            "name" => "celana hypebeast",
+            "price" => 500000,
+            "stock" => 15,
+            "photo" => "img://tes/celanahypebeast",
+            "desc" => "desc celana hypebeast evos celana hypebeast",
+            "categories_id" => 4,
+            "stand" => 4
+        ]);
+        Product::create([
+            "name" => "topi hypebeast",
+            "price" => 200000,
+            "stock" => 60,
+            "photo" => "img://tes/sepatuhypebeast",
+            "desc" => "desc sepatu hypebeast evos sepatu hypebeast",
+            "categories_id" => 4,
+            "stand" => 4
+        ]);
 
         Wallet::create([
             "users_id" => 4,
             "credit" => 100000,
             "debit" => NULL,
+            "status" => "selesai"
         ]);
         Wallet::create([
             "users_id" => 4,
             "credit" => NULL,
             "debit" => 15000,
+            "status" => "selesai"
         ]);
 
         Transaction::create([
             "users_id" => 4,
             "products_id" => 1,
-            "status" => "diambil",
+            "status" => "dibayar",
             "order_code" => "INV_12345",
             "price" => 5000,
             "quantity" => 1
@@ -113,7 +145,7 @@ class DatabaseSeeder extends Seeder
         Transaction::create([
             "users_id" => 4,
             "products_id" => 2,
-            "status" => "diambil",
+            "status" => "dibayar",
             "order_code" => "INV_12345",
             "price" => 10000,
             "quantity" => 1
@@ -121,7 +153,7 @@ class DatabaseSeeder extends Seeder
         Transaction::create([
             "users_id" => 4,
             "products_id" => 3,
-            "status" => "diambil",
+            "status" => "dibayar",
             "order_code" => "INV_12345",
             "price" => 3000,
             "quantity" => 2

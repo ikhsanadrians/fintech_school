@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WalletController extends Controller
 {
@@ -25,9 +26,17 @@ class WalletController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function topUp(Request $request)
     {
-        //
+        $user = Auth::user()->id;
+
+        Wallet::create([
+            "users_id" => $user,
+            "credit" => $request->credit,
+            "status" => "process"
+        ]);
+
+        return redirect()->back();
     }
 
     /**
