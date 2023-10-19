@@ -21,6 +21,8 @@ class UserController extends Controller
 
         if (!Auth::attempt($validate)) return redirect()->back();
 
+        if (Auth::user()->roles_id == 1) return redirect("/admin");
+
         return redirect("/");
     }
 
@@ -52,12 +54,14 @@ class UserController extends Controller
         $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
 
         $user = Auth::user();
-        $products = Product::all();
+        $products = Product::with("transaction")->get();
         $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
-        // dd($wallet);
         $creditTotal = $wallet->sum('credit');
         $debitTotal = $wallet->sum('debit');
         $difference = $creditTotal - $debitTotal;
+
+        if (Auth::user()->roles_id == 1) return view("admin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar"));
+
 
         return view("home", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar"));
     }

@@ -1,55 +1,47 @@
-@extends('template.app_home')
-
-@section('sidebar_features')
-    <p></p>
-    <div class="flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-coin"
-            viewBox="0 0 16 16">
-            <path
-                d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z" />
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
-        </svg>
-        <span class="font-bold text-xl">saldo: {{ $difference }}</span>
-
-    </div>
-@endsection
+@extends('template.app')
 
 @section('content')
-    <div class="container mx-auto h-screen overflow-y-auto">
-        <div class="flex flex-col gap-3 ">
-            <div class="flex items-center gap-4 w-full">
+    <div class="container mx-auto h-full overflow-y-auto w-full">
+        <div class="flex flex-col gap-3 w-full">
+            <div class="flex items-center gap-6 w-full">
                 <div class="rounded-full bg-slate-950 p-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="fill-white" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="fill-white"
+                        viewBox="0 0 16 16">
                         <path
                             d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z" />
                     </svg>
                 </div>
-                <span class="w-full">keranjang</span>
+                <span class="w-full">Keranjang</span>
             </div>
             @php
                 $totalPrice = 0;
             @endphp
             @foreach ($transactionsKeranjang as $ts)
                 <div class="flex items-center gap-3 w-full">
-                    <li class="flex w-full">{{ $ts->products->name }} | {{ $ts->price }} | {{ $ts->quantity }}</li>
+                    <span class="flex w-full">{{ $ts->products->name }} | {{ $ts->price }} | {{ $ts->quantity }}</span>
                     <form action="/keranjang/delete" method="post">
                         @csrf
                         @method('DELETE')
                         <input type="hidden" name="id" value="{{ $ts->id }}">
-                        <button type="submit" class="bg-red-400 p-2 rounded-md">cancel</button>
+                        <button type="submit" class="bg-red-400 p-3 rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                                class="fill-white" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </button>
                     </form>
                 </div>
                 @php
                     $totalPrice += $ts->price * $ts->quantity;
                 @endphp
             @endforeach
-            <p>total harga: {{ $totalPrice }}</p>
+            <p class="mt-3">Total harga: {{ $totalPrice }}</p>
             <form action="{{ route('payProduct') }}" method="post" class="flex w-full">
                 @csrf
                 @method('PUT')
-                <button type="submit" class="p-2 bg-slate-200 rounded-lg w-full">Check Out</button>
+                <button type="submit" class="p-2 bg-green-400 text-white rounded-lg w-full">Buy</button>
             </form>
             <div class="flex w-full bg-slate-300 border border-b-1"></div>
 
@@ -58,20 +50,46 @@
                     <div class="rounded-full bg-slate-950 p-3 flex">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="fill-white" viewBox="0 0 16 16">
-                            <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
                             <path
-                                d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z" />
+                                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z" />
+                            <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z" />
                         </svg>
                     </div>
-                    <span class="w-full">Pembayaran</span>
+                    <span class="w-full">Riwayat Top Up</span>
+                </div>
+                @foreach ($walletProcess as $wp)
+                    <div class="flex items-center mt-3 gap-2">
+                        <span>Top Up Rp. {{ $wp->credit }} </span>
+                        <span class="bg-yellow-300 p-2 text-white rounded">
+                            {{ $wp->status }}
+                        </span>
+                    </div>
+                @endforeach
+                <div class="flex w-full bg-slate-300 border border-b-1 my-6"></div>
+
+                <div class="flex items-center gap-5 w-full">
+                    <div class="rounded-full bg-slate-950 p-3 flex">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="fill-white" viewBox="0 0 16 16">
+                            <path
+                                d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z" />
+                            <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z" />
+                            <path
+                                d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
+                        </svg>
+                    </div>
+                    <span class="w-full">Riwayat Pembayaran</span>
                 </div>
                 <div class="flex flex-col">
                     @foreach ($transactionsBayar as $ts)
-                        <li class="mt-3">{{ $ts->products->name }} | {{ $ts->price }} | {{ $ts->quantity }}</li>
+                        <span class="mt-3">{{ $ts->products->name }} | {{ $ts->price }} | {{ $ts->quantity }}</span>
                     @endforeach
-                    @foreach ($walletProcess as $wp)
-                        <li class="mt-3">Top Up Rp. {{ $wp->credit }} | {{ $wp->status }}</li>
-                    @endforeach
+                    <form action="{{ route('clearHistoryBuy') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="p-2 bg-red-400 text-white rounded-md w-full mt-3">Hapus
+                            Riwayat</button>
+                    </form>
                 </div>
             </div>
             <div class="flex w-full bg-slate-300 border border-b-1"></div>
@@ -88,19 +106,14 @@
                 </div>
                 @foreach ($laporanPembayaran as $order_code => $laporanGroup)
                     <div class="flex items-center gap-4 w-full">
-                        <li class="my-3 w-full">{{ $order_code }} </li>
+                        <span class="my-2 w-full">{{ $order_code }}</span>
                         <a href="/history/{{ $order_code }}" target="_blank"
-                            class="bg-green-300 p-3 rounded-md">Download</a>
+                            class="bg-green-400 text-white p-3 rounded-md">Download</a>
                     </div>
                 @endforeach
-                <form action="{{ route('clearHistoryBuy') }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="p-2 bg-red-400 rounded-md w-full mt-3">Hapus Pembayaran</button>
-                </form>
                 <div class="flex w-full bg-slate-300 border border-b-1"></div>
-
             </div>
         </div>
+        <div class="flex flex-col h-20"></div>
     </div>
 @endsection

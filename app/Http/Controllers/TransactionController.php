@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\User;
+use App\Models\UserTransaction;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,13 @@ class TransactionController extends Controller
         $difference = $creditTotal - $debitTotal;
 
         return view("history", compact("transactionsKeranjang", "transactionsBayar", "difference", "laporanPembayaran", "walletProcess"));
+    }
+
+    public function transactionList()
+    {
+        $transactions = Transaction::with("products", "user", "userTransactions")->get();
+
+        return view("transaction", compact("transactions"));
     }
 
     /**
@@ -49,7 +58,7 @@ class TransactionController extends Controller
             'debit' => $wallet->debit + $totalBayar,
         ]);
 
-        return redirect("/");
+        return redirect()->back();
     }
 
     public function payNow(Request $request, $id)
@@ -70,15 +79,15 @@ class TransactionController extends Controller
             'debit' => $wallet->debit + ($request->price * $request->quantity)
         ]);
 
-        return redirect("/");
+        return redirect()->back();
     }
 
     public function cancelCart(Request $request)
     {
-        $transactionKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->where("id", $request->id);
+        $transactionKeranjang = Transaction::with("products", "userTransactions")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->where("id", $request->id);
         $transactionKeranjang->delete();
 
-        return redirect("/");
+        return redirect()->back();
     }
 
     public function clearHistoryBuy()
@@ -86,7 +95,7 @@ class TransactionController extends Controller
         $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar");
         $transactionsBayar->delete();
 
-        return redirect("/history");
+        return redirect()->back();
     }
 
 
@@ -96,9 +105,9 @@ class TransactionController extends Controller
     public function addToCart(Request $request)
     {
         $order_code = "INV_" . Auth::user()->id . now()->format("dmYHis");
-        $users_id = Auth::user()->id;
-        Transaction::create([
-            "users_id" => $users_id,
+        // $users_id = Auth::user()->id;
+        $transaction = Transaction::create([
+            "users_id" => Auth::user()->id,
             "products_id" => $request->products_id,
             "status" => "dikeranjang",
             "order_code" => $order_code,
@@ -106,7 +115,12 @@ class TransactionController extends Controller
             "quantity" => $request->quantity
         ]);
 
-        return redirect("/");
+        UserTransaction::create([
+            "user_id" => $transaction->users_id,
+            "transaction_id" => $transaction->id
+        ]);
+
+        return redirect()->back();
     }
 
     /**

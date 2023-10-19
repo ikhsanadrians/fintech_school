@@ -15,11 +15,16 @@ class Transaction extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class, "id");
     }
 
     public function products()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function userTransactions()
+    {
+        return $this->belongsToMany(User::class, "user_transactions");
     }
 }

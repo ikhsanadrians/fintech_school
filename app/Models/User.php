@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'password',
+        'roles_id'
     ];
 
     /**
@@ -49,11 +50,15 @@ class User extends Authenticatable
 
     public function wallet()
     {
-        return $this->belongsTo(Wallet::class);
+        return $this->hasOne(Wallet::class, "id");
     }
 
     public function transaction()
     {
-        return $this->belongsTo(Transaction::class);
+        return $this->hasOne(Transaction::class, "users_id");
+    }
+    public function userTransactions()
+    {
+        return $this->belongsToMany(Transaction::class, "user_transactions");
     }
 }

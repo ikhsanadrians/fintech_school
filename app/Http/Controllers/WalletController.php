@@ -13,6 +13,9 @@ class WalletController extends Controller
      */
     public function index()
     {
+        $wallets = Wallet::with("user")->get();
+
+        return view("topup", compact("wallets"));
     }
 
     /**
@@ -34,6 +37,17 @@ class WalletController extends Controller
             "users_id" => $user,
             "credit" => $request->credit,
             "status" => "process"
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function topUpSuccess($id)
+    {
+        $wallet = Wallet::find($id);
+
+        $wallet->update([
+            "status" => "selesai"
         ]);
 
         return redirect()->back();

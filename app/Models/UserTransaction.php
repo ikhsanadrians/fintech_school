@@ -5,16 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Wallet extends Model
+class UserTransaction extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        "users_id", "credit", "debit", "status"
+        "user_id",
+        "transaction_id"
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, "users_id");
-    }
 }
