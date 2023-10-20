@@ -36,6 +36,20 @@ class TransactionController extends Controller
         return view("transaction", compact("transactions"));
     }
 
+    public function downloadAll()
+    {
+        $transactions = Transaction::with("products", "user", "userTransactions")->get();
+
+        return view("downloadall", compact("transactions"));
+    }
+
+    public function reportList()
+    {
+        $laporanPembayaran = Transaction::where("status", "dibayar")->get()->groupBy('order_code');
+
+        return view('report', compact("laporanPembayaran"));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -43,7 +57,7 @@ class TransactionController extends Controller
     {
         $order_code = "INV_" . Auth::user()->id . now()->format("dmYHis");
         $transactionKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
-        $wallet = Wallet::where("users_id", Auth::user()->id)->find(2);
+        $wallet = Wallet::where("users_id", Auth::user()->id)->first();
         $totalBayar = 0;
         foreach ($transactionKeranjang as $ts) {
             $totalBayar += ($ts->price * $ts->quantity);
@@ -115,6 +129,8 @@ class TransactionController extends Controller
             "quantity" => $request->quantity
         ]);
 
+
+
         UserTransaction::create([
             "user_id" => $transaction->users_id,
             "transaction_id" => $transaction->id
@@ -128,7 +144,7 @@ class TransactionController extends Controller
      */
     public function downloadReport($order_code)
     {
-        $report = Transaction::with("products")->where("users_id", Auth::user()->id)->where("order_code", $order_code)->get();
+        $report = Transaction::with("products")->where("order_code", $order_code)->get();
 
         return view('download', compact('report'));
     }

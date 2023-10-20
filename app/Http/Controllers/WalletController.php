@@ -15,7 +15,7 @@ class WalletController extends Controller
     {
         $wallets = Wallet::with("user")->get();
 
-        return view("topup", compact("wallets"));
+        return view("bank", compact("wallets"));
     }
 
     /**

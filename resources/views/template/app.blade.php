@@ -48,7 +48,9 @@
                 </div>
                 <a href="/{{ !Auth::check() ? 'login' : 'logout' }}"
                     class="p-3 rounded-md text-white bg-slate-950">{{ !Auth::check() ? 'Login' : 'Logout' }}</a>
-                <a href="/register" class="p-3 rounded-md border border-slate-950">Register</a>
+                @if (!Auth::check())
+                    <a href="/register" class="p-3 rounded-md border border-slate-950">Register</a>
+                @endif
             </div>
         </div>
     </div>

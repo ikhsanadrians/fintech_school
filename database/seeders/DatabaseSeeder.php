@@ -27,6 +27,9 @@ class DatabaseSeeder extends Seeder
             "name" => "kantin",
         ]);
         Role::create([
+            "name" => "bank",
+        ]);
+        Role::create([
             "name" => "siswa",
         ]);
 
@@ -51,9 +54,19 @@ class DatabaseSeeder extends Seeder
             "roles_id" => 2
         ]);
         User::create([
+            "name" => "rizki",
+            "password" => "999",
+            "roles_id" => 3
+        ]);
+        User::create([
             "name" => "rapael",
             "password" => "890",
-            "roles_id" => 3
+            "roles_id" => 4
+        ]);
+        User::create([
+            "name" => "faris",
+            "password" => "345",
+            "roles_id" => 4
         ]);
 
         Product::create([
@@ -112,20 +125,20 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Wallet::create([
-            "users_id" => 3,
+            "users_id" => 4,
             "credit" => 100000,
             "debit" => NULL,
             "status" => "selesai"
         ]);
         Wallet::create([
-            "users_id" => 3,
+            "users_id" => 4,
             "credit" => NULL,
             "debit" => 15000,
             "status" => "selesai"
         ]);
 
         Transaction::create([
-            "users_id" => 3,
+            "users_id" => 4,
             "products_id" => 1,
             "status" => "dibayar",
             "order_code" => "INV_12345",
@@ -133,7 +146,7 @@ class DatabaseSeeder extends Seeder
             "quantity" => 1
         ]);
         Transaction::create([
-            "users_id" => 3,
+            "users_id" => 4,
             "products_id" => 2,
             "status" => "dibayar",
             "order_code" => "INV_12345",
@@ -141,7 +154,7 @@ class DatabaseSeeder extends Seeder
             "quantity" => 1
         ]);
         Transaction::create([
-            "users_id" => 3,
+            "users_id" => 4,
             "products_id" => 3,
             "status" => "dibayar",
             "order_code" => "INV_12345",
@@ -150,15 +163,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         UserTransaction::create([
-            "user_id" => 3,
+            "user_id" => 4,
             "transaction_id" => 1,
         ]);
         UserTransaction::create([
-            "user_id" => 3,
+            "user_id" => 4,
             "transaction_id" => 2,
         ]);
         UserTransaction::create([
-            "user_id" => 3,
+            "user_id" => 4,
             "transaction_id" => 3,
         ]);
     }

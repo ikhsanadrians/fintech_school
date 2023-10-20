@@ -77,14 +77,14 @@ class ProductController extends Controller
     {
         // dd($request->all());
         if ($request->hasFile('photo')) {
-            $request->file('photo')->move("photos/$request->name", "photo.png");
+            $request->file('photo')->move("photos/", "$request->name.png");
         }
 
         Product::create([
             "name" => $request->name,
             "price" => $request->price,
             "stock" => $request->stock,
-            "photo" => "/photos/$request->name/photo.png",
+            "photo" => "/photos/$request->name.png",
             "desc" => $request->desc,
             "categories_id" => $request->categories_id,
             "stand" => $request->stand,
@@ -112,9 +112,12 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        $categories = Category::all();
+
+        return view('editProduct', compact('product', 'categories'));
     }
 
     /**
@@ -128,8 +131,12 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+
+        $product->delete();
+
+        return redirect()->back();
     }
 }

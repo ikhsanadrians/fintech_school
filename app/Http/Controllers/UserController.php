@@ -52,15 +52,24 @@ class UserController extends Controller
 
         $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
         $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
-
+        $wallets = Wallet::with("user")->get();
+        $wallet_count = Wallet::with("user")->where("status", "selesai")->count();
+        $wallet_bank = Wallet::with("user")->where("status", "selesai")->get();
         $user = Auth::user();
+        $users = User::with("roles")->get();
+        $nasabah = User::where("roles_id", "4")->count();
         $products = Product::with("transaction")->get();
         $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
         $creditTotal = $wallet->sum('credit');
         $debitTotal = $wallet->sum('debit');
+        $credit_bank = $wallet_bank->sum('credit');
+        $debit_bank = $wallet_bank->sum('debit');
         $difference = $creditTotal - $debitTotal;
+        $difference_bank = $credit_bank - $debit_bank;
 
-        if (Auth::user()->roles_id == 1) return view("admin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar"));
+        if (Auth::user()->roles_id == 1) return view("admin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar", "users"));
+        if (Auth::user()->roles_id == 2) return view("kantin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar"));
+        if (Auth::user()->roles_id == 3) return view("bank", compact("wallets", "difference_bank", "nasabah", "wallet_count"));
 
 
         return view("home", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar"));
