@@ -39,9 +39,9 @@
             </svg>
         </div>
         @if (URL::current() == 'http://127.0.0.1:8000/transaction-kantin')
-            <a href="/transaction-kantin" class="hover:text-gray-300">Transaction</a>
+            <a href="/transaction-kantin" class="hover:text-gray-300">Transactions</a>
         @else
-            <a href="/transaction-admin" class="hover:text-gray-300">Transaction</a>
+            <a href="/transaction-admin" class="hover:text-gray-300">Transactions</a>
         @endif
     </li>
 @endsection

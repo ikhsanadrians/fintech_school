@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -123,9 +124,25 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+
+        if ($request->hasFile('photo')) {
+            $request->file('photo')->move("photos/", "$request->name.png");
+        }
+
+        $product->update([
+            "name" => $request->name,
+            "price" => $request->price,
+            "stock" => $request->stock,
+            "photo" => "/photos/$request->name.png",
+            "desc" => $request->desc,
+            "categories_id" => $request->categories_id,
+            "stand" => $request->stand
+        ]);
+
+        return to_route("/kantin");
     }
 
     /**
@@ -133,9 +150,16 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
+        $productToDelete = Product::find($id);
 
-        $product->delete();
+        $productImagePath = $productToDelete->photo;
+
+        if (!unlink(public_path($productImagePath))) {
+            $productToDelete->delete();
+        } else {
+            $productToDelete->delete();
+            Storage::delete($productToDelete->photo);
+        }
 
         return redirect()->back();
     }
