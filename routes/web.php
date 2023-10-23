@@ -38,7 +38,7 @@ Route::get("/clothings", [ProductController::class, "clothes"]);
 Route::get("/foods", [ProductController::class, "foods"]);
 Route::get("/drinks", [ProductController::class, "drinks"]);
 Route::get("/product/{id}", [ProductController::class, "show"]);
-Route::put("/product-update/{id}", [ProductController::class, "update"]);
+Route::put("/product-update/{id}", [ProductController::class, "update"])->name("updateProduct");
 Route::post("/product/{id}", [TransactionController::class, "addToCart"]);
 Route::get("/transaction-admin", [TransactionController::class, "transactionList"]);
 Route::get("/transaction-kantin", [TransactionController::class, "transactionList"]);

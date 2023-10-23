@@ -14,7 +14,7 @@
             <div class="flex text-3xl font-bold">
                 <a href="/">EFinance.</a>
             </div>
-            <div class="flex gap-3 items-center">
+            <div class="flex gap-3 items-center hidden lg:block">
                 <a href="/history">Inbox</a>
                 <a href="/clothings">clothings</a>
                 <a href="/foods">foods</a>

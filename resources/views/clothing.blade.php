@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container mx-auto">
-        <span class="text-xl font-bold ml-10">Clothes</span>
-        <div class="flex mt-4">
-            <div class="flex gap-4 flex-wrap ml-8 basis-[70%]">
+        <span class="text-xl font-bold ml-4">Clothes</span>
+        <div class="flex flex-col w-full lg:flex">
+            <div class="flex gap-4 flex-wrap basis-[70%]">
                 @foreach ($clots as $clot)
                     @foreach ($clot->products as $cl)
                         <div class="lg:w-[30%] md:w-1/2 w-full p-2">

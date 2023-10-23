@@ -3,10 +3,10 @@
 @section('content')
     <div class="container mx-auto h-full overflow-y-auto">
         <div class="flex flex-col">
-            <span class="text-xl ml-8 mb-3">Hello {{ $user->name }} welcome back👋</span>
-            <span class="text-xl ml-8 mb-3">Rp {{ $difference }}</span>
-            <div class="flex w-full">
-                <div class="flex gap-4 flex-wrap basis-[70%] ml-5">
+            <span class="text-xl ml-4 mb-3">Hello {{ $user->name }} welcome back👋</span>
+            <span class="text-xl ml-4 mb-3">Rp {{ $difference }}</span>
+            <div class="flex flex-col w-full lg:flex">
+                <div class="flex gap-4 flex-wrap basis-[70%]">
                     @foreach ($products as $key => $product)
                         <div class="lg:w-[30%] md:w-1/2 w-full p-2">
                             <div class="bg-gray-50 rounded-lg shadow-md border border-slate-300">
