@@ -57,14 +57,36 @@
                     </div>
                     <span class="w-full">Riwayat Top Up</span>
                 </div>
-                @foreach ($walletProcess as $wp)
-                    <div class="flex items-center mt-3 gap-2">
-                        <span>Top Up Rp. {{ $wp->credit }} </span>
-                        <span class="bg-yellow-300 p-2 text-white rounded">
-                            {{ $wp->status }}
-                        </span>
+                <div class="flex w-full gap-4">
+                    <div class="flex flex-col w-full">
+                        @foreach ($walletSelesai as $wp)
+                            <div class="flex w-full items-center mt-3 justify-between">
+                                @if ($wp->credit == 0)
+                                    <span></span>
+                                @else
+                                    <span>Top Up Rp. {{ $wp->credit }}</span>
+                                    <span>{{ $wp->created_at }}</span>
+                                    <span class="bg-green-400 p-2 text-white rounded">
+                                        {{ $wp->status }}
+                                    </span>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                    <div class="flex flex-col w-full">
+                        @foreach ($walletProcess as $wp)
+                            <div class="flex w-full items-center mt-3 justify-between">
+                                <span>Top Up Rp. {{ $wp->credit }} </span>
+                                <span>{{ $wp->created_at }}</span>
+                                <span class="bg-yellow-300 p-2 text-white rounded">
+                                    {{ $wp->status }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+
                 <div class="flex w-full bg-slate-300 border border-b-1 my-6"></div>
 
                 <div class="flex items-center gap-5 w-full">

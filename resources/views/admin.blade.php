@@ -67,7 +67,6 @@
                     </tbody>
                 </table>
             </div>
-            <div class="flex h-20"></div>
         </div>
     </div>
 @endsection

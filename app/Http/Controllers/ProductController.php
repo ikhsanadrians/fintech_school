@@ -163,4 +163,25 @@ class ProductController extends Controller
 
         return redirect()->back();
     }
+
+    public function allProduct(Request $request)
+    {
+        $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
+        $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
+        $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
+        $creditTotal = $wallet->sum('credit');
+        $debitTotal = $wallet->sum('debit');
+        $difference = $creditTotal - $debitTotal;
+        $products = null;
+        $category = $request->index;
+        $category_id = Category::where("name", $category)->first();
+
+        if ($category == "") {
+            $products = Product::all();
+        } else {
+            $products = Product::where("categories_id", $category_id->id)->get();
+        }
+
+        return view("category_product", compact("products", "difference", "transactionsKeranjang"));
+    }
 }

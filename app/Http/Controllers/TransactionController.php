@@ -26,7 +26,7 @@ class TransactionController extends Controller
         $debitTotal = $walletSelesai->sum('debit');
         $difference = $creditTotal - $debitTotal;
 
-        return view("history", compact("transactionsKeranjang", "transactionsBayar", "difference", "laporanPembayaran", "walletProcess"));
+        return view("history", compact("transactionsKeranjang", "transactionsBayar", "difference", "laporanPembayaran", "walletProcess", "walletSelesai"));
     }
 
     public function transactionList()
@@ -119,22 +119,30 @@ class TransactionController extends Controller
     public function addToCart(Request $request)
     {
         $order_code = "INV_" . Auth::user()->id . now()->format("dmYHis");
-        // $users_id = Auth::user()->id;
-        $transaction = Transaction::create([
-            "users_id" => Auth::user()->id,
-            "products_id" => $request->products_id,
-            "status" => "dikeranjang",
-            "order_code" => $order_code,
-            "price" => $request->price,
-            "quantity" => $request->quantity
-        ]);
+        $same_transaction = Transaction::where("products_id", $request->products_id)->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->first();
+        $product = Product::find($request->products_id);
+        if ($same_transaction) {
+            $sum_quantity = $same_transaction->quantity += $request->quantity;
+            $sum_price = $sum_quantity * $product->price;
+            $same_transaction->update([
+                "quantity" => $sum_quantity,
+                "price" => $sum_price
+            ]);
+        } else {
+            $transaction = Transaction::create([
+                "users_id" => Auth::user()->id,
+                "products_id" => $request->products_id,
+                "status" => "dikeranjang",
+                "order_code" => $order_code,
+                "price" => $request->price,
+                "quantity" => $request->quantity
+            ]);
 
-
-
-        UserTransaction::create([
-            "user_id" => $transaction->users_id,
-            "transaction_id" => $transaction->id
-        ]);
+            UserTransaction::create([
+                "user_id" => $transaction->users_id,
+                "transaction_id" => $transaction->id
+            ]);
+        }
 
         return redirect()->back();
     }

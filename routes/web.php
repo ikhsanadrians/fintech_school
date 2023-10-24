@@ -34,9 +34,9 @@ Route::get("/report-bank", [TransactionController::class, 'reportList']);
 Route::get("/history/{order_code}", [TransactionController::class, 'downloadReport']);
 Route::delete("/history", [TransactionController::class, 'clearHistoryBuy'])->name('clearHistoryBuy');
 Route::post("/topup", [WalletController::class, "topUp"])->name("topUp");
-Route::get("/clothings", [ProductController::class, "clothes"]);
-Route::get("/foods", [ProductController::class, "foods"]);
-Route::get("/drinks", [ProductController::class, "drinks"]);
+
+Route::get("/category-product", [ProductController::class, "allProduct"]);
+
 Route::get("/product/{id}", [ProductController::class, "show"]);
 Route::put("/product-update/{id}", [ProductController::class, "update"])->name("updateProduct");
 Route::post("/product/{id}", [TransactionController::class, "addToCart"]);
@@ -45,6 +45,7 @@ Route::get("/transaction-kantin", [TransactionController::class, "transactionLis
 Route::get("/report/all", [TransactionController::class, "downloadAll"]);
 Route::get("/bank", [UserController::class, "index"]);
 Route::put("/product/{id}", [TransactionController::class, "payProduct"]);
+
 Route::put("/topup/{id}", [WalletController::class, "topUpSuccess"]);
 Route::get("/create-product", [ProductController::class, "create"]);
 Route::post("/create-product", [ProductController::class, "store"])->name('storeProduct');

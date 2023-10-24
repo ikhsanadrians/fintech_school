@@ -4,7 +4,6 @@
     <div class="container mx-auto h-full overflow-y-auto">
         <div class="flex flex-col">
             <div class="flex flex-col ml-3">
-                <span class="text-xl mb-3">Hello {{ $user->name }} welcome back👋</span>
                 <span class="text-xl mb-3">Rp {{ $difference }}</span>
                 <div class="flex items-center gap-3">
                     <a href="/category-product?index=pakaian" class="rounded-lg border p-2 hover:bg-gray-300">clothings</a>
