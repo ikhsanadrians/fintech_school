@@ -22,45 +22,6 @@ class ProductController extends Controller
         return view('home', compact('products'));
     }
 
-    public function clothes()
-    {
-        $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
-        $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
-        $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
-        $creditTotal = $wallet->sum('credit');
-        $debitTotal = $wallet->sum('debit');
-        $difference = $creditTotal - $debitTotal;
-
-        $clots = Category::where("name", "pakaian")->with("products")->get();
-        return view('clothing', compact('clots', 'transactionsKeranjang', 'transactionsBayar', 'difference'));
-    }
-
-    public function drinks()
-    {
-        $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
-        $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
-        $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
-        $creditTotal = $wallet->sum('credit');
-        $debitTotal = $wallet->sum('debit');
-        $difference = $creditTotal - $debitTotal;
-
-        $drinks = Category::where("name", "minuman")->with("products")->get();
-        return view('drink', compact('drinks', 'transactionsKeranjang', 'transactionsBayar', 'difference'));
-    }
-
-    public function foods()
-    {
-        $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
-        $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
-        $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
-        $creditTotal = $wallet->sum('credit');
-        $debitTotal = $wallet->sum('debit');
-        $difference = $creditTotal - $debitTotal;
-
-        $foods = Category::where("name", "makanan")->with("products")->get();
-        return view('food', compact('foods', 'transactionsKeranjang', 'transactionsBayar', 'difference'));
-    }
-
     /**
      * Show the form for creating a new resource.
      */
