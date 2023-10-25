@@ -153,38 +153,11 @@ class TransactionController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function downloadReport($order_code)
     {
         $report = Transaction::with("products")->where("order_code", $order_code)->get();
         $code = $order_code;
 
         return view('download', compact('report', 'code'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
     }
 }

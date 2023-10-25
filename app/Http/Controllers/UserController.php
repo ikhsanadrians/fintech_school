@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
@@ -23,6 +22,8 @@ class UserController extends Controller
         if (!Auth::attempt($validate)) return redirect()->back();
 
         if (Auth::user()->roles_id == 1) return redirect("/admin");
+        if (Auth::user()->roles_id == 2) return redirect("/kantin");
+        if (Auth::user()->roles_id == 3) return redirect("/bank");
 
         return redirect("/");
     }
@@ -36,7 +37,8 @@ class UserController extends Controller
     {
         User::create([
             "name" => $request->name,
-            "password" => bcrypt($request->password)
+            "password" => bcrypt($request->password),
+            "roles_id" => 1
         ]);
 
         return redirect("/login");
