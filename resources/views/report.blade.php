@@ -57,7 +57,7 @@
                         <option value="">descending</option>
                     </select>
                 </div>
-                <a href="/report/all" class="bg-green-400 text-white p-3 rounded" target="_blank">Download All</a>
+                <a href="/report/all" class="bg-green-400 p-3 rounded" target="_blank">Download All</a>
             </div>
             <div class="flex w-full">
                 <table class="w-full">
@@ -68,7 +68,7 @@
                                     <div class="flex items-center gap-4 w-full">
                                         <span class="my-2 w-full">{{ $order_code }}</span>
                                         <a href="/history/{{ $order_code }}" target="_blank"
-                                            class="bg-green-400 text-white p-3 rounded-md">Download</a>
+                                            class="bg-green-400 p-3 rounded-md">Download</a>
                                     </div>
                                 </td>
                             </tr>

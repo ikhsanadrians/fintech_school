@@ -36,11 +36,17 @@ class TransactionController extends Controller
         return view("transaction", compact("transactions"));
     }
 
-    public function downloadAll()
+    public function downloadAll(Request $request)
     {
-        $transactions = Transaction::with("products", "user", "userTransactions")->get();
+        $category = $request->index;
 
-        return view("downloadall", compact("transactions"));
+        if ($category == "") {
+            $transactions = Transaction::with("products", "user", "userTransactions")->get();
+        } else {
+            $transactions = Wallet::all();
+        }
+
+        return view("downloadall", compact("transactions", "category"));
     }
 
     public function reportList()
@@ -153,8 +159,9 @@ class TransactionController extends Controller
     public function downloadReport($order_code)
     {
         $report = Transaction::with("products")->where("order_code", $order_code)->get();
+        $code = $order_code;
 
-        return view('download', compact('report'));
+        return view('download', compact('report', 'code'));
     }
 
     /**

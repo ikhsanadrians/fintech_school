@@ -53,7 +53,7 @@ class ProductController extends Controller
         ]);
 
 
-        return redirect("/admin");
+        return redirect("/kantin");
     }
 
     /**
@@ -74,11 +74,10 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $product = Product::find($id);
         $categories = Category::all();
-
         return view('editProduct', compact('product', 'categories'));
     }
 
@@ -89,8 +88,15 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
+        $productImagePath = $product->photo;
+
         if ($request->hasFile('photo')) {
             $request->file('photo')->move("photos/", "$request->name.png");
+            if (!unlink(public_path($productImagePath))) {
+                Storage::delete($product->photo);
+            } else {
+                Storage::delete($product->photo);
+            }
         }
 
         $product->update([
@@ -103,7 +109,7 @@ class ProductController extends Controller
             "stand" => $request->stand
         ]);
 
-        return to_route("/kantin");
+        return redirect('/kantin');
     }
 
     /**
@@ -133,6 +139,7 @@ class ProductController extends Controller
         $creditTotal = $wallet->sum('credit');
         $debitTotal = $wallet->sum('debit');
         $difference = $creditTotal - $debitTotal;
+
         $products = null;
         $category = $request->index;
         $category_id = Category::where("name", $category)->first();

@@ -73,55 +73,61 @@ class DatabaseSeeder extends Seeder
             "name" => "lemon ice tea",
             "price" => 5000,
             "stock" => 100,
-            "photo" => "https://images.pexels.com/photos/109275/pexels-photo-109275.jpeg?auto=compress&cs=tinysrgb&w=600",
+            "photo" => "/photos/lemon.png",
             "desc" => "desc lemon es rrq lemon",
             "categories_id" => 1,
-            "stand" => 2
+            "stand" => 2,
+            "created_at" => "2023-10-25 01:50:58"
         ]);
         Product::create([
             "name" => "bakso",
             "price" => 10000,
             "stock" => 50,
-            "photo" => "https://images.pexels.com/photos/998245/pexels-photo-998245.jpeg?auto=compress&cs=tinysrgb&w=600",
+            "photo" => "/photos/bakso.png",
             "desc" => "desc bakso evos bakso",
             "categories_id" => 2,
-            "stand" => 1
+            "stand" => 1,
+            "created_at" => "2023-10-25 01:50:59"
         ]);
         Product::create([
             "name" => "sushi",
             "price" => 3000,
             "stock" => 30,
-            "photo" => "https://images.pexels.com/photos/3687447/pexels-photo-3687447.jpeg?auto=compress&cs=tinysrgb&w=600",
+            "photo" => "/photos/sushi.png",
             "desc" => "desc sushi evos sushi",
             "categories_id" => 2,
-            "stand" => 1
+            "stand" => 1,
+            "created_at" => "2023-10-25 01:50:55"
         ]);
         Product::create([
             "name" => "baju hypebeast",
             "price" => 1000000,
             "stock" => 10,
-            "photo" => "https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg?auto=compress&cs=tinysrgb&w=600",
+            "photo" => "/photos/baju.png",
             "desc" => "desc baju hypebeast evos baju hypebeast",
             "categories_id" => 3,
-            "stand" => 4
+            "stand" => 4,
+            "created_at" => "2023-10-25 01:50:52"
         ]);
         Product::create([
             "name" => "celana hypebeast",
             "price" => 500000,
             "stock" => 15,
-            "photo" => "https://images.pexels.com/photos/1082528/pexels-photo-1082528.jpeg?auto=compress&cs=tinysrgb&w=600",
+            "photo" => "/photos/celana.png",
             "desc" => "desc celana hypebeast evos celana hypebeast",
             "categories_id" => 3,
-            "stand" => 4
+            "stand" => 4,
+            "created_at" => "2023-10-25 01:50:51"
         ]);
         Product::create([
             "name" => "topi hypebeast",
             "price" => 200000,
             "stock" => 60,
-            "photo" => "https://images.pexels.com/photos/242149/pexels-photo-242149.jpeg?auto=compress&cs=tinysrgb&w=600",
+            "photo" => "/photos/topi.png",
             "desc" => "desc topi hypebeast evos topi hypebeast",
             "categories_id" => 3,
-            "stand" => 4
+            "stand" => 4,
+            "created_at" => "2023-10-25 01:50:40"
         ]);
 
         Wallet::create([

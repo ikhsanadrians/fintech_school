@@ -42,12 +42,17 @@
         <div class="flex flex-col w-full bg-white p-4 rounded-lg h-full">
             <span class="text-2xl">List of expand</span>
             <div class="flex justify-between my-4">
-                <div class="flex gap-2 items-center ">
-                    <span class="text-lg text-slate-400">Filter By</span>
-                    <select name="" id="" class="border rounded p-2 px-3">
-                        <option value="">ascending</option>
-                        <option value="">descending</option>
-                    </select>
+                <div class="flex items-center justify-between w-full">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg text-slate-400">Filter By</span>
+                        <select name="" id="" class="border rounded p-2 px-3">
+                            <option value="">ascending</option>
+                            <option value="">descending</option>
+                        </select>
+                    </div>
+
+                    <a href="/report/all?index=topup-download" class="bg-green-400 p-3 rounded-md" target="_blank">Download
+                        All</a>
                 </div>
             </div>
             <div class="flex w-full">
@@ -102,9 +107,9 @@
                                         </form>
                                     </td>
                                 @endif
-
+                            </tr>
+                        @endforeach
                     </tbody>
-                    @endforeach
                 </table>
             </div>
         </div>

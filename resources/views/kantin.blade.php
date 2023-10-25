@@ -30,9 +30,14 @@
             <div class="flex justify-between my-4">
                 <div class="flex gap-2 items-center ">
                     <span class="text-lg text-slate-400">Filter By</span>
-                    <select name="" id="" class="border rounded p-2 px-3">
-                        <option value="">ascending</option>
-                        <option value="">descending</option>
+                    <select id="dropdown" class="border rounded p-2 px-3">
+                        <option class="selectedValue" value="asc">Ascending</option>
+                        <option class="selectedValue" value="desc">Descending</option>
+                    </select>
+                    <select id="category" class="border rounded p-2 px-3">
+                        <option class="selectedCategory" value="1">makanan</option>
+                        <option class="selectedCategory" value="2">minuman</option>
+                        <option class="selectedCategory" value="3">pakaian</option>
                     </select>
                 </div>
                 <div class="flex items-center gap-3 p-2 rounded bg-green-400">
@@ -96,4 +101,37 @@
             <div class="flex h-20"></div>
         </div>
     </div>
+
+    <script>
+        const dropdown = document.querySelector('#dropdown');
+        const category = document.querySelector('#category');
+        let queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const currentFilter = urlParams.get('filter');
+        const categoryFilter = urlParams.get('category');
+
+        dropdown.addEventListener('change', (e) => {
+            const filterValue = e.target.value;
+            const url = window.location.origin + window.location.pathname +
+                `?filter=${filterValue}&category=${categoryFilter}`;
+            window.location.href = url;
+        });
+
+        category.addEventListener('change', (e) => {
+            const categoryValue = e.target.value;
+            const url = window.location.origin + window.location.pathname +
+                `?filter=${currentFilter}&category=${categoryValue}`;
+            window.location.href = url;
+        });
+
+        const selectedValue = document.querySelectorAll('.selectedValue');
+        selectedValue.forEach((value) => {
+            value.value === currentFilter ? value.selected = true : value.selected = false;
+        });
+
+        const selectedCategory = document.querySelectorAll('.selectedCategory');
+        selectedCategory.forEach((value) => {
+            value.value === categoryFilter ? value.selected = true : value.selected = false;
+        });
+    </script>
 @endsection
