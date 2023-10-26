@@ -31,9 +31,20 @@ class TransactionController extends Controller
 
     public function transactionList()
     {
-        $transactions = Transaction::with("products", "user", "userTransactions")->get();
+        $status = ['diambil', 'dibayar'];
+        $transactions = Transaction::with("products", "user", "userTransactions")->whereIn("status", $status)->get();
 
         return view("transaction", compact("transactions"));
+    }
+
+    public function takeOrder($id)
+    {
+        $transaction = Transaction::find($id);
+        $transaction->update([
+            "status" => "diambil"
+        ]);
+
+        return redirect()->back();
     }
 
     public function downloadAll(Request $request)
@@ -61,22 +72,52 @@ class TransactionController extends Controller
      */
     public function payProduct()
     {
+        $wallet = Wallet::where("users_id", Auth::user()->id)->first();
+        $creditTotal = $wallet->sum('credit');
+        $debitTotal = $wallet->sum('debit');
+        $difference = $creditTotal - $debitTotal;
         $order_code = "INV_" . Auth::user()->id . now()->format("dmYHis");
         $transactionKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
-        $wallet = Wallet::where("users_id", Auth::user()->id)->first();
         $totalBayar = 0;
+        $barang_habis = "";
+        $stock_habis = Transaction::whereHas('products', function ($query) {
+            $query->where('stock', 0);
+        })->with("products")->where('status', 'dikeranjang')->get();
+
         foreach ($transactionKeranjang as $ts) {
             $totalBayar += ($ts->price * $ts->quantity);
         }
-        Transaction::where("users_id", Auth::user()->id)
-            ->where("status", "dikeranjang")
-            ->update([
-                'status' => 'dibayar',
-                'order_code' => $order_code
+        if ($transactionKeranjang->count() == 0) {
+            return redirect()->back()->with("message_keranjang", "keranjang kosong");
+        } elseif ($difference < $totalBayar) {
+            return redirect()->back()->with("message_keranjang", "saldo tidak cukup");
+        } elseif ($stock_habis) {
+            foreach ($stock_habis as $transaction) {
+                $barang_habis = $transaction->products->name;
+                $transaction->delete();
+            }
+            Transaction::where("users_id", Auth::user()->id)
+                ->where("status", "dikeranjang")
+                ->update([
+                    'status' => 'dibayar',
+                    'order_code' => $order_code
+                ]);
+            $wallet->update([
+                'debit' => $wallet->debit + $totalBayar,
             ]);
-        $wallet->update([
-            'debit' => $wallet->debit + $totalBayar,
-        ]);
+            return redirect()->back()->with("message_keranjang", "$barang_habis gagal beli barang habis");
+        } else {
+            Transaction::where("users_id", Auth::user()->id)
+                ->where("status", "dikeranjang")
+                ->update([
+                    'status' => 'dibayar',
+                    'order_code' => $order_code
+                ]);
+            $wallet->update([
+                'debit' => $wallet->debit + $totalBayar,
+            ]);
+        }
+
 
         return redirect()->back();
     }
@@ -127,6 +168,9 @@ class TransactionController extends Controller
         $order_code = "INV_" . Auth::user()->id . now()->format("dmYHis");
         $same_transaction = Transaction::where("products_id", $request->products_id)->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->first();
         $product = Product::find($request->products_id);
+
+        if ($product->stock == 0) return redirect()->back()->with("message_keranjang", "stock habis");
+
         if ($same_transaction) {
             $sum_quantity = $same_transaction->quantity += $request->quantity;
             $sum_price = $sum_quantity * $product->price;

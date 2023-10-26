@@ -25,7 +25,14 @@
                                             {{ $product->name }}
                                         </a>
                                     </div>
-                                    <div class="text-gray-600">Rp. {{ $product->price }}</div>
+                                    <div class="text-gray-600 flex justify-between items-center">
+                                        <span>
+                                            Rp. {{ $product->price }}
+                                        </span>
+                                        <span class="bg-gray-200 p-2 rounded-full">
+                                            {{ $product->stock }}
+                                        </span>
+                                    </div>
                                     <form action="{{ route('addToCart') }}" method="post">
                                         @csrf
                                         <div class="mt-4">
@@ -46,16 +53,29 @@
                     @endforeach
                 </div>
                 <div class="flex flex-col basis-[25%] mt-2">
+                    @if (session('message_keranjang'))
+                        <div class="p-3 mb-2 rounded bg-red-400 text-white">{{ session('message_keranjang') }}</div>
+                    @endif
                     <div class="flex flex-col gap-3 border border-slate-300 rounded-xl p-4">
+
                         <span>Keranjang</span>
                         @php
                             $totalPrice = 0;
                         @endphp
                         @foreach ($transactionsKeranjang as $ts)
                             <div class="flex items-center gap-2 w-full">
-                                <span class="w-full">{{ $ts->products->name }} | {{ $ts->price }}
-                                    ({{ $ts->quantity }})
-                                </span>
+                                @if ($ts->products->stock == 0)
+                                    <del class="w-full"> <span class="w-full">{{ $ts->products->name }} |
+                                            {{ $ts->price }}
+                                            ({{ $ts->quantity }})
+                                        </span>
+                                    </del>
+                                @else
+                                    <span class="w-full">{{ $ts->products->name }} | {{ $ts->price }}
+                                        ({{ $ts->quantity }})
+                                    </span>
+                                @endif
+
                                 <form action="/keranjang/delete" method="post">
                                     @csrf
                                     @method('DELETE')

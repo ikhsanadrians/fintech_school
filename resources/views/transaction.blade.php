@@ -1,6 +1,8 @@
 @extends('template.app_home')
 
 @section('sidebar_features')
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css" rel="stylesheet" type="text/css" />
+
     <li class="flex items-center gap-3">
         <div class="flex flex-col items-center justify-center bg-slate-950 rounded-full p-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="fill-white"
@@ -88,32 +90,42 @@
                                 <td class="text-center p-2">{{ $transaction->quantity }}</td>
                                 @if ($transaction->status == 'dibayar')
                                     <td class="text-center p-2">
-                                        <div class="flex bg-green-400 rounded items-center p-2 justify-between">
-                                            <span>
-                                                {{ $transaction->status }}
-                                            </span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z" />
-                                            </svg>
+                                        <div class="flex items-center justify-center gap-2">
+                                            <div class="flex btn btn-success justify-between">
+                                                <span>
+                                                    {{ $transaction->status }}
+                                                </span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z" />
+                                                </svg>
+                                            </div>
+                                            <form action="/transaction-kantin/{{ $transaction->id }}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-warning">Verifikasi
+                                                    Diambil</button>
+                                            </form>
                                         </div>
-                                    </td>
-                                @elseif ($transaction->status == 'dikeranjang')
-                                    <td class="text-center p-2">
-                                        <div class="flex bg-yellow-400 rounded items-center p-2 justify-between">
-                                            <span>
-                                                {{ $transaction->status }}
-                                            </span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                fill="currentColor" class="" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z" />
-                                            </svg>
-                                        </div>
+
                                     </td>
                                 @else
-                                    <span></span>
+                                    <td class="text-center p-2">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <div class="flex btn btn-secondary p-2 justify-between">
+                                                <span>
+                                                    {{ $transaction->status }}
+                                                </span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                    fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                    </td>
                                 @endif
                             </tr>
                         @endforeach

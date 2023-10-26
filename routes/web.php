@@ -43,6 +43,7 @@ Route::middleware('bank')->group(function () {
 Route::middleware('kantin')->group(function () {
     Route::get("/kantin", [UserController::class, 'index']);
     Route::get("/transaction-kantin", [TransactionController::class, "transactionList"]);
+    Route::put("/transaction-kantin/{id}", [TransactionController::class, "takeOrder"]);
     Route::get("/create-product", [ProductController::class, "create"]);
     Route::post("/create-product", [ProductController::class, "store"])->name('storeProduct');
     Route::get("/edit-product/{id}", [ProductController::class, "edit"]);
