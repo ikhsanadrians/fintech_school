@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
@@ -55,6 +56,7 @@ class UserController extends Controller
 
         $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
         $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
+        $categories = Category::all();
 
         $wallets = Wallet::with("user")->get();
         $wallet_count = Wallet::with("user")->where("status", "selesai")->count();
@@ -74,7 +76,6 @@ class UserController extends Controller
 
         $difference = $creditTotal - $debitTotal;
         $difference_bank = $credit_bank - $debit_bank;
-
         $filter = $request->filter;
         $category = $request->category;
 
@@ -86,7 +87,7 @@ class UserController extends Controller
 
 
         if ($user->roles_id == 1) return view("admin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar", "users"));
-        if ($user->roles_id == 2) return view("kantin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar",));
+        if ($user->roles_id == 2) return view("kantin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar", "categories"));
         if ($user->roles_id == 3) return view("bank", compact("wallets", "difference_bank", "nasabah", "wallet_count"));
 
 

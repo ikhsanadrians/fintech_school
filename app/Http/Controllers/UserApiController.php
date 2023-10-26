@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Http\JsonResponse;
 
 class UserApiController extends Controller
 {
@@ -18,6 +18,7 @@ class UserApiController extends Controller
             "name" => "required",
             "password" => "required",
         ]);
+        $token = User::where("name", $request->name)->first()->createToken('auth')->plainTextToken;
 
         if (!Auth::attempt($validate)) return response()->json([
             'message' => 'wrong username or password',
@@ -26,20 +27,27 @@ class UserApiController extends Controller
 
         if (Auth::user()->roles_id == 1) return response()->json([
             'message' => 'success login admin',
-            'data' => $validate
+            'data' => $validate,
+            'token' => $token
         ], 200);
-        if (Auth::user()->roles_id == 2)  return response()->json([
+
+        if (Auth::user()->roles_id == 2) return response()->json([
             'message' => 'success login kantin',
-            'data' => $validate
+            'data' => $validate,
+            'token' => $token
         ], 200);
-        if (Auth::user()->roles_id == 3)  return response()->json([
+
+        if (Auth::user()->roles_id == 3) return response()->json([
             'message' => 'success login bank',
-            'data' => $validate
+            'data' => $validate,
+            'token' => $token
         ], 200);
+
 
         return response()->json([
             'message' => 'success login siswa',
-            'data' => $validate
+            'data' => $validate,
+            'token' => $token
         ], 200);
     }
 
@@ -57,13 +65,12 @@ class UserApiController extends Controller
         ], 200);
     }
 
-    public function logout()
+    public function logout(): JsonResponse
     {
-        Session::flush();
-        $user = Auth::user();
+        auth()->user()->tokens()->delete();
+
         return response()->json([
-            'message' => 'sucess logout',
-            'data' => $user
+            'message' => 'Logout success',
         ], 200);
     }
 

@@ -1,6 +1,7 @@
 @extends('template.app_home')
 
 @section('sidebar_features')
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css" rel="stylesheet" type="text/css" />
     <li class="flex items-center gap-3">
         <div class="flex flex-col items-center justify-center bg-slate-950 rounded-full p-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="fill-white"
@@ -31,23 +32,56 @@
                 <div class="flex gap-2 items-center ">
                     <span class="text-lg text-slate-400">Filter By</span>
                     <select id="dropdown" class="border rounded p-2 px-3">
-                        <option class="selectedValue" value="asc">Ascending</option>
-                        <option class="selectedValue" value="desc">Descending</option>
+                        <option class="selectedValue" value="asc">terbaru</option>
+                        <option class="selectedValue " value="desc">terlama</option>
                     </select>
                     <select id="category" class="border rounded p-2 px-3">
-                        <option class="selectedCategory" value="1">makanan</option>
-                        <option class="selectedCategory" value="2">minuman</option>
+                        <option class="selectedCategory" value="1">minuman</option>
+                        <option class="selectedCategory" value="2">makanan</option>
                         <option class="selectedCategory" value="3">pakaian</option>
                     </select>
                 </div>
-                <div class="flex items-center gap-3 p-2 rounded bg-green-400">
-                    <a href="/create-product" class="text-lg text-white">Add Product</a>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="fill-white" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                        <path
-                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                    </svg>
+                <a href="#my_modal_add" class="btn btn-success">Add Product</a>
+                <div class="modal" id="my_modal_add">
+                    <div class="modal-box">
+                        <div class="flex flex-col w-full">
+                            <div class="flex justify-between items-center">
+                                <span>Add Product</span>
+                                <a href="#" class="btn mb-2">X</a>
+                            </div>
+                            <form action="{{ route('storeProduct') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <span>Name</span>
+                                <input type="text" name="name" class="mb-2 w-full input input-bordered">
+                                <div class="flex w-full justify-between gap-2">
+                                    <div class="flex flex-col w-full">
+                                        <span>Price</span>
+                                        <input type="number" name="price" class="input input-bordered">
+                                        <span>Stock</span>
+                                        <input type="number" name="stock" class="input input-bordered">
+                                    </div>
+                                    <div class="flex flex-col w-full">
+                                        <span>Stand</span>
+                                        <input type="number" name="stand" class="input input-bordered">
+                                        <span>Category</span>
+                                        <select name="categories_id" class="input input-bordered">
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <span>Photo</span>
+                                <input type="file" name="photo" class="w-full">
+                                <label class="mt-2">Description</label>
+                                <textarea type="text" name="desc" class="input input-bordered w-full mt-2"></textarea>
+                                <div class="flex justify-center w-full">
+                                    <button type="submit" class="btn btn-success w-full mt-2">Add</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
                 </div>
             </div>
             <div class="flex w-full">
@@ -83,14 +117,62 @@
                                 <td class="p-2 text-center">{{ $product->stock }}</td>
                                 <td class="p-2 text-center">{{ $product->stand }}</td>
                                 <td class="p-2 text-center">
-                                    <form action="/delete-product/{{ $product->id }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="p-2 rounded border bg-red-400 text-white"
-                                            type="submit">Delete</button>
-                                        <a href="/edit-product/{{ $product->id }}"
-                                            class="p-2 rounded border bg-yellow-300 text-white">Edit</a>
-                                    </form>
+                                    <div class="flex justify-center items-center gap-2">
+                                        <form action="/delete-product/{{ $product->id }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="p-2 btn btn-error" type="submit">Delete</button>
+                                        </form>
+                                        <a href="#my_modal_{{ $product->id }}" class="btn btn-warning">Edit</a>
+                                        <div class="modal" id="my_modal_{{ $product->id }}">
+                                            <div class="modal-box">
+                                                <div class="flex flex-col w-full">
+                                                    <div class="flex justify-between items-center w-full">
+                                                        <span>Edit Product</span>
+                                                        <a href="#" class="btn mb-2">X</a>
+                                                    </div>
+                                                    <form action="/product-update/{{ $product->id }}" method="post"
+                                                        enctype="multipart/form-data">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <input type="text" value="{{ $product->name }}"
+                                                            name="name" class="mb-2 w-full input input-bordered">
+                                                        <div class="flex w-full justify-between gap-2">
+                                                            <div class="flex flex-col w-full gap-2">
+                                                                <input type="number" value="{{ $product->price }}"
+                                                                    name="price" class="input input-bordered">
+                                                                <input type="number" value="{{ $product->stock }}"
+                                                                    name="stock" class="input input-bordered">
+                                                            </div>
+                                                            <div class="flex flex-col w-full gap-2">
+                                                                <input type="number" value="{{ $product->stand }}"
+                                                                    name="stand" class="input input-bordered">
+                                                                <select name="categories_id"
+                                                                    class="input input-bordered p-2">
+                                                                    @foreach ($categories as $category)
+                                                                        <option value="{{ $category->id }}"
+                                                                            @if ($category->id == $product->category->id) selected @endif>
+                                                                            {{ $category->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <img src="{{ $product->photo }}" alt="not"
+                                                            class="object-cover w-20 h-20 border rounded my-2">
+                                                        <input type="file" name="photo" class="w-full mb-2"
+                                                            value="{{ $product->photo }}">
+                                                        <textarea type="text" name="desc" class="input input-bordered p-2 w-full">{{ $product->desc }}</textarea>
+                                                        <div class="flex justify-center w-full">
+                                                            <button type="submit"
+                                                                class="btn btn-success w-full mt-2">Edit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </td>
                             </tr>
                         @endforeach

@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html data-theme="lemonade">
 
 <head>
     <meta charset="utf-8">
@@ -34,7 +34,6 @@
             @yield('content')
         </div>
     </div>
-
 </body>
 
 </html>

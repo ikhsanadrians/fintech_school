@@ -46,27 +46,32 @@ class DatabaseSeeder extends Seeder
         User::create([
             "name" => "raya",
             "password" => "123",
-            "roles_id" => 1
+            "roles_id" => 1,
+
         ]);
         User::create([
             "name" => "iksan",
             "password" => "678",
-            "roles_id" => 2
+            "roles_id" => 2,
+
         ]);
         User::create([
             "name" => "rizki",
             "password" => "999",
-            "roles_id" => 3
+            "roles_id" => 3,
+
         ]);
         User::create([
             "name" => "rapael",
             "password" => "890",
-            "roles_id" => 4
+            "roles_id" => 4,
+
         ]);
         User::create([
             "name" => "faris",
             "password" => "345",
-            "roles_id" => 4
+            "roles_id" => 4,
+
         ]);
 
         Product::create([

@@ -18,8 +18,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+        $categories = Category::all();
 
-        return view('home', compact('products'));
+        return view('home', compact('products', 'categories'));
     }
 
     /**
@@ -109,23 +110,25 @@ class ProductController extends Controller
             "stand" => $request->stand
         ]);
 
-        return redirect('/kantin');
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $productToDelete = Product::find($id);
 
         $productImagePath = $productToDelete->photo;
 
-        if (!unlink(public_path($productImagePath))) {
-            $productToDelete->delete();
-        } else {
-            $productToDelete->delete();
-            Storage::delete($productToDelete->photo);
+        if ($request->hasFile('photo')) {
+            $request->file('photo')->move("photos/", "$request->name.png");
+            if (!unlink(public_path($productImagePath))) {
+                Storage::delete($productToDelete->photo);
+            } else {
+                Storage::delete($productToDelete->photo);
+            }
         }
 
         return redirect()->back();
