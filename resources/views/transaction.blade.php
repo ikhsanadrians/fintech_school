@@ -41,10 +41,24 @@
             </svg>
         </div>
         @if (URL::current() == 'http://127.0.0.1:8000/transaction-kantin')
-            <a href="/transaction-kantin" class="hover:text-gray-300">Transactions</a>
+            <a href="/transaction-kantin" class="hover:text-gray-300">Transaction</a>
         @else
-            <a href="/transaction-admin" class="hover:text-gray-300">Transactions</a>
+            <a href="/transaction-admin" class="hover:text-gray-300">Transaction</a>
         @endif
+    </li>
+    <li class="flex items-center gap-3">
+        <div class="flex flex-col items-center justify-center bg-slate-950 rounded-full p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="fill-white"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z" />
+                <path
+                    d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z" />
+                <path fill-rule="evenodd"
+                    d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z" />
+            </svg>
+        </div>
+        <a href="/category-admin" class="hover:text-gray-300">Category</a>
     </li>
 @endsection
 
@@ -101,12 +115,17 @@
                                                         d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z" />
                                                 </svg>
                                             </div>
-                                            <form action="/transaction-kantin/{{ $transaction->id }}" method="post">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="submit" class="btn btn-warning">Verifikasi
-                                                    Diambil</button>
-                                            </form>
+                                            @if (URL::current() == 'http://127.0.0.1:8000/transaction-admin')
+                                                <span></span>
+                                            @else
+                                                <form action="/transaction-kantin/{{ $transaction->id }}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="btn btn-warning">Verifikasi
+                                                        Diambil</button>
+                                                </form>
+                                            @endif
+
                                         </div>
 
                                     </td>

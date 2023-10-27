@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId("categories_id")->constrained()->onDelete("CASCADE");
             $table->char("stand");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

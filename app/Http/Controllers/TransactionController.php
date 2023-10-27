@@ -79,6 +79,7 @@ class TransactionController extends Controller
         $order_code = "INV_" . Auth::user()->id . now()->format("dmYHis");
         $transactionKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
         $totalBayar = 0;
+        $bayar_habis = 0;
         $barang_habis = "";
         $stock_habis = Transaction::whereHas('products', function ($query) {
             $query->where('stock', 0);
@@ -94,6 +95,7 @@ class TransactionController extends Controller
         } elseif ($stock_habis) {
             foreach ($stock_habis as $transaction) {
                 $barang_habis = $transaction->products->name;
+                $bayar_habis = $transaction->products->price * $transaction->quantity;
                 $transaction->delete();
             }
             Transaction::where("users_id", Auth::user()->id)
@@ -103,7 +105,7 @@ class TransactionController extends Controller
                     'order_code' => $order_code
                 ]);
             $wallet->update([
-                'debit' => $wallet->debit + $totalBayar,
+                'debit' => $wallet->debit + ($totalBayar - $bayar_habis),
             ]);
             return redirect()->back()->with("message_keranjang", "$barang_habis gagal beli barang habis");
         } else {
@@ -117,8 +119,6 @@ class TransactionController extends Controller
                 'debit' => $wallet->debit + $totalBayar,
             ]);
         }
-
-
         return redirect()->back();
     }
 

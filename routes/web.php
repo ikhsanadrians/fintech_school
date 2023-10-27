@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -31,6 +32,10 @@ Route::middleware('admin')->group(function () {
     Route::get("/admin", [UserController::class, 'index']);
     Route::get("/report-admin", [TransactionController::class, 'reportList']);
     Route::get("/transaction-admin", [TransactionController::class, "transactionList"]);
+    Route::get("/category-admin", [CategoryController::class, "index"]);
+    Route::post("/category-admin-store", [CategoryController::class, "store"]);
+    Route::delete("/category-admin-delete/{id}", [CategoryController::class, "destroy"]);
+    Route::put("/category-admin-update/{id}", [CategoryController::class, "update"]);
 });
 
 Route::middleware('bank')->group(function () {
@@ -43,12 +48,12 @@ Route::middleware('bank')->group(function () {
 Route::middleware('kantin')->group(function () {
     Route::get("/kantin", [UserController::class, 'index']);
     Route::get("/transaction-kantin", [TransactionController::class, "transactionList"]);
-    Route::put("/transaction-kantin/{id}", [TransactionController::class, "takeOrder"]);
     Route::get("/create-product", [ProductController::class, "create"]);
     Route::post("/create-product", [ProductController::class, "store"])->name('storeProduct');
     Route::get("/edit-product/{id}", [ProductController::class, "edit"]);
     Route::put("/product-update/{id}", [ProductController::class, "update"])->name("updateProduct");
     Route::delete("/delete-product/{id}", [ProductController::class, "destroy"])->name('destroyProduct');
+    Route::put("/transaction-kantin/{id}", [TransactionController::class, "takeOrder"]);
 });
 
 Route::get("/report/all", [TransactionController::class, "downloadAll"]);

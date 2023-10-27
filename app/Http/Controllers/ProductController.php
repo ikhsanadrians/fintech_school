@@ -118,7 +118,7 @@ class ProductController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $productToDelete = Product::find($id);
+        $productToDelete = Product::withTrashed()->find($id);
 
         $productImagePath = $productToDelete->photo;
 
@@ -130,6 +130,8 @@ class ProductController extends Controller
                 Storage::delete($productToDelete->photo);
             }
         }
+
+        $productToDelete->delete();
 
         return redirect()->back();
     }
