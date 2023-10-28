@@ -25,6 +25,6 @@ class Product extends Model
 
     public function transaction()
     {
-        return $this->hasOne(Transaction::class, "products_id");
+        return $this->hasOne(Transaction::class, "products_id")->withTrashed();
     }
 }

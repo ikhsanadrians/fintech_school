@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -54,8 +55,17 @@ class UserController extends Controller
     {
         if (!Auth::user()) return view("dashboard");
 
-        $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
-        $transactionsBayar = Transaction::withTrashed()->with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
+        DB::enableQueryLog();
+
+        $transactionsKeranjang = Transaction::with("products")
+            ->where("users_id", Auth::user()->id)
+            ->where("status", "dikeranjang")
+            ->withTrashed()
+            ->get();
+
+        // dd(DB::getQueryLog());
+
+        $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->withTrashed()->get();
         $categories = Category::all();
 
         $wallets = Wallet::with("user")->get();
@@ -65,10 +75,7 @@ class UserController extends Controller
         $user = Auth::user();
         $users = User::with("roles")->get();
         $nasabah = User::where("roles_id", "4")->count();
-        $products = Product::with("transaction")->get();
-        $product_hapus = Product::whereHas("transaction", function ($query) {
-            $query->where("status", "dikeranjang");
-        })->with("transaction")->withTrashed()->get();
+        $products = Product::with("transaction")->withTrashed()->get();
 
         $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
         $creditTotal = $wallet->sum('credit');
@@ -92,7 +99,7 @@ class UserController extends Controller
         if ($user->roles_id == 2) return view("kantin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar", "categories"));
         if ($user->roles_id == 3) return view("bank", compact("wallets", "difference_bank", "nasabah", "wallet_count"));
 
-        return view("home", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar", "product_hapus"));
+        return view("home", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar"));
     }
 
     public function logout()

@@ -95,16 +95,6 @@ class DatabaseSeeder extends Seeder
             "created_at" => "2023-10-25 01:50:59"
         ]);
         Product::create([
-            "name" => "sushi",
-            "price" => 3000,
-            "stock" => 30,
-            "photo" => "/photos/sushi.png",
-            "desc" => "desc sushi evos sushi",
-            "categories_id" => 2,
-            "stand" => 1,
-            "created_at" => "2023-10-25 01:50:55"
-        ]);
-        Product::create([
             "name" => "baju hypebeast",
             "price" => 1000000,
             "stock" => 10,

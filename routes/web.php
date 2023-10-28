@@ -17,7 +17,7 @@ Route::middleware('user')->group(function () {
     Route::get("/", [UserController::class, 'index']);
     Route::post("/", [TransactionController::class, 'addToCart'])->name("addToCart");
     Route::put("/", [TransactionController::class, 'payProduct'])->name("payProduct");
-    Route::delete("/keranjang/delete", [TransactionController::class, 'cancelCart']);
+    Route::delete("/keranjang/delete/{id}", [TransactionController::class, 'cancelCart']);
     Route::get("/history", [TransactionController::class, 'index']);
     Route::delete("/history", [TransactionController::class, 'clearHistoryBuy'])->name('clearHistoryBuy');
     Route::post("/topup", [WalletController::class, "topUp"])->name("topUp");

@@ -89,10 +89,10 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {{-- {{ $products }} --}}
                         @foreach ($transactions as $key => $transaction)
                             <tr class="border-b border-gray-200">
                                 <td class="text-center p-2">{{ $key + 1 }}</td>
-                                {{-- @dd($transaction->user) --}}
                                 <td class="text-center p-2">
                                     @foreach ($transaction->userTransactions as $uts)
                                         {{ $uts->name }}
