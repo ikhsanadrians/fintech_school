@@ -20,7 +20,7 @@ class Transaction extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, "id");
+        return $this->belongsTo(User::class, "id")->withTrashed();
     }
 
     public function products()
@@ -30,6 +30,6 @@ class Transaction extends Model
 
     public function userTransactions()
     {
-        return $this->belongsToMany(User::class, "user_transactions");
+        return $this->belongsToMany(User::class, "user_transactions")->withTrashed();
     }
 }

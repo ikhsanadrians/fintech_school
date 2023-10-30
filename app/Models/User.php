@@ -7,16 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
         'name',
         'password',
@@ -45,20 +49,20 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class)->withTrashed();
     }
 
     public function wallet()
     {
-        return $this->hasOne(Wallet::class, "id");
+        return $this->hasOne(Wallet::class, "id")->withTrashed();
     }
 
     public function transaction()
     {
-        return $this->hasOne(Transaction::class, "users_id");
+        return $this->hasOne(Transaction::class, "users_id")->withTrashed();
     }
     public function userTransactions()
     {
-        return $this->belongsToMany(Transaction::class, "user_transactions");
+        return $this->belongsToMany(Transaction::class, "user_transactions")->withTrashed();
     }
 }
