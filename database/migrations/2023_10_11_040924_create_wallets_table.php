@@ -18,6 +18,7 @@ return new class extends Migration
             $table->double("debit")->nullable();
             $table->string("status");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('roles_id')->constrained()->onDelete('CASCADE');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

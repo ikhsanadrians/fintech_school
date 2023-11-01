@@ -12,16 +12,15 @@ Route::post("/login", [UserController::class, 'postLogin'])->name("login");
 Route::post("/register", [UserController::class, 'registerUser'])->name("register");
 Route::get("/register", [UserController::class, 'getRegisterUser']);
 Route::get("/logout", [UserController::class, 'logout'])->name("logout");
+Route::get("/", [UserController::class, 'index']);
 
 Route::middleware('user')->group(function () {
-    Route::get("/", [UserController::class, 'index']);
     Route::post("/", [TransactionController::class, 'addToCart'])->name("addToCart");
     Route::put("/", [TransactionController::class, 'payProduct'])->name("payProduct");
     Route::delete("/keranjang/delete/{id}", [TransactionController::class, 'cancelCart']);
     Route::get("/history", [TransactionController::class, 'index']);
     Route::delete("/history", [TransactionController::class, 'clearHistoryBuy'])->name('clearHistoryBuy');
     Route::post("/topup", [WalletController::class, "topUp"])->name("topUp");
-    Route::get("/history/{order_code}", [TransactionController::class, 'downloadReport']);
     Route::get("/category-product", [ProductController::class, "allProduct"]);
     Route::get("/product/{id}", [ProductController::class, "show"]);
     Route::post("/product/{id}", [TransactionController::class, "addToCart"]);
@@ -56,4 +55,5 @@ Route::middleware('kantin')->group(function () {
     Route::put("/transaction-kantin/{id}", [TransactionController::class, "takeOrder"]);
 });
 
+Route::get("/history/{order_code}", [TransactionController::class, 'downloadReport']);
 Route::get("/report/all", [TransactionController::class, "downloadAll"]);

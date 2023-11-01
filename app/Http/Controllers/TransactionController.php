@@ -63,7 +63,8 @@ class TransactionController extends Controller
 
     public function reportList()
     {
-        $laporanPembayaran = Transaction::where("status", "dibayar")->get()->groupBy('order_code');
+        $status = ['diambil', 'dibayar'];
+        $laporanPembayaran = Transaction::whereIn("status", $status)->get()->groupBy("order_code");
 
         return view('report', compact("laporanPembayaran"));
     }
