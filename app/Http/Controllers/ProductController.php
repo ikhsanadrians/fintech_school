@@ -12,20 +12,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::withTrashed()->get();
         $categories = Category::all();
 
         return view('home', compact('products', 'categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $categories = Category::all();
@@ -33,12 +27,8 @@ class ProductController extends Controller
         return view("tambahProduct", compact("categories"));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        // dd($request->all());
         if ($request->hasFile('photo')) {
             $request->file('photo')->move("photos/", "$request->name.png");
         }
@@ -57,9 +47,7 @@ class ProductController extends Controller
         return redirect("/kantin");
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show($id)
     {
         $product = Product::findOrFail($id);
@@ -72,9 +60,7 @@ class ProductController extends Controller
         return view("detail", compact("product", "transactionsKeranjang", "difference"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Request $request, $id)
     {
         $product = Product::find($id);
@@ -82,9 +68,7 @@ class ProductController extends Controller
         return view('editProduct', compact('product', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, $id)
     {
         $product = Product::find($id);
@@ -113,9 +97,7 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Request $request, $id)
     {
         $productToDelete = Product::withTrashed()->find($id);
@@ -156,5 +138,38 @@ class ProductController extends Controller
         }
 
         return view("category_product", compact("products", "difference", "transactionsKeranjang"));
+    }
+
+    public function restoreProduct($id)
+    {
+        $product = Product::onlyTrashed()->find($id);
+
+        $product->restore();
+
+        return redirect()->back();
+    }
+
+    public function deletedPermanent($id)
+    {
+        try {
+            $productToDelete = Product::onlyTrashed()->find($id);
+
+            $productImagePath = $productToDelete->photo;
+
+            if (!Storage::exists($productImagePath)) {
+                $productToDelete->forceDelete();
+            }
+
+            if (!unlink(public_path($productImagePath))) {
+                Storage::delete($productImagePath);
+            }
+
+            $productToDelete->forceDelete();
+        } catch (\Throwable $th) {
+            echo ("loading");
+        }
+
+
+        return redirect()->back();
     }
 }

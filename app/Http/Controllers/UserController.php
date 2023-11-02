@@ -75,6 +75,7 @@ class UserController extends Controller
         $user = Auth::user();
         $users = User::with("roles")->get();
         $nasabah = User::where("roles_id", "4")->count();
+        $product_deleted = Product::onlyTrashed()->get();
         $products = Product::with("transaction")->withTrashed()->get();
 
         $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
@@ -96,7 +97,7 @@ class UserController extends Controller
         }
 
         if ($user->roles_id == 1) return view("admin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar", "users"));
-        if ($user->roles_id == 2) return view("kantin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar", "categories"));
+        if ($user->roles_id == 2) return view("kantin", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar", "categories", "product_deleted"));
         if ($user->roles_id == 3) return view("bank", compact("wallets", "difference_bank", "nasabah", "wallet_count"));
 
         return view("home", compact("user", "wallet", "difference", "products", "transactionsKeranjang", "transactionsBayar"));

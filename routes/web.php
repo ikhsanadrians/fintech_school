@@ -53,6 +53,8 @@ Route::middleware('kantin')->group(function () {
     Route::put("/product-update/{id}", [ProductController::class, "update"])->name("updateProduct");
     Route::delete("/delete-product/{id}", [ProductController::class, "destroy"])->name('destroyProduct');
     Route::put("/transaction-kantin/{id}", [TransactionController::class, "takeOrder"]);
+    Route::post("/restore-kantin/{id}", [ProductController::class, "restoreProduct"]);
+    Route::delete("/delete-permanent-kantin/{id}", [ProductController::class, "deletedPermanent"]);
 });
 
 Route::get("/history/{order_code}", [TransactionController::class, 'downloadReport']);
