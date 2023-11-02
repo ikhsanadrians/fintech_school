@@ -10,8 +10,9 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+        $categories_delete = Category::onlyTrashed()->get();
 
-        return view('category', compact('categories'));
+        return view('category', compact('categories', 'categories_delete'));
     }
 
     public function store(Request $request)
@@ -38,6 +39,22 @@ class CategoryController extends Controller
         $category->update([
             "name" => $request->name
         ]);
+
+        return redirect()->back();
+    }
+
+    public function deletedPermanent($id)
+    {
+        $categoryDelete = Category::onlyTrashed()->find($id);
+        $categoryDelete->forceDelete();
+
+        return redirect()->back();
+    }
+
+    public function restoreCategory($id)
+    {
+        $product = Category::onlyTrashed()->find($id);
+        $product->restore();
 
         return redirect()->back();
     }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-theme="lemonade">
+<html data-theme="light">
 
 <head>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
     <!-- Navbar -->
     <div
         class="flex justify-between items-center p-4 border border-slate-300 border-r-0 border-l-0 overflow-y-hidden bg-white">
-        <div class="text-3xl font-bold">
+        <div class="text-3xl font-bold text-black">
             <span>EFinance.</span>
         </div>
         <div class="flex gap-3">
@@ -24,13 +24,13 @@
     <div class="flex h-screen fixed overflow-hidden w-full">
         <!-- Sidebar -->
         <div class="w-60 p-4 border border-slate-300 border-t-0 bg-white">
-            <ul class="space-y-3">
+            <ul class="space-y-3 text-black">
                 @yield('sidebar_features')
             </ul>
         </div>
 
         <!-- Konten Utama -->
-        <div class="flex-1 p-4 w-full overflow-y-auto">
+        <div class="flex-1 p-4 w-full overflow-y-auto bg-[#F0F7F4]">
             @yield('content')
         </div>
     </div>

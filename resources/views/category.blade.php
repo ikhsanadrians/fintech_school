@@ -61,7 +61,10 @@
                             <option value="">descending</option>
                         </select>
                     </div>
-                    <a href="#modal_category_add" class="btn btn-success">Add Category</a>
+                    <div class="flex items-center gap-3">
+                        <a href="#modal_category_add" class="btn btn-success">Add Category</a>
+                        <a href="#modal_category_delete" class="btn btn-error">Trash</a>
+                    </div>
                     <div class="modal" id="modal_category_add">
                         <div class="modal-box">
                             <div class="flex flex-col w-full">
@@ -74,6 +77,51 @@
                                     <input type="text" name="name" class="mb-2 w-full input input-bordered">
                                     <button type="submit" class="btn btn-success w-full mt-2">Add</button>
                                 </form>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal" id="modal_category_delete">
+                        <div class="modal-box">
+                            <div class="flex flex-col w-full">
+                                <div class="flex justify-between items-center">
+                                    <span>Deleted Bin</span>
+                                    <div class="flex gap-2">
+                                        <a href="#" class="btn mb-2">X</a>
+                                    </div>
+                                </div>
+                                @foreach ($categories_delete as $pdl)
+                                    <div class="flex justify-between items-center">
+                                        <span>{{ $pdl->name }}</span>
+                                        <div class="flex gap-2">
+                                            <form action="/restore-category/{{ $pdl->id }}" method="post">
+                                                @csrf
+                                                <button type="submit" class="btn btn-success"><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="fill-green-800" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242-2.532-4.431zM2.973 7.773l-1.255.337a.5.5 0 1 1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24l2.552-4.467zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.498.498 0 0 0 0 .707l1.5 1.5a.5.5 0 1 0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244l-1.716-3.004z" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                            <form action="/delete-permanent-category/{{ $pdl->id }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn mb-2 btn-error">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                        <path
+                                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+                                @endforeach
                             </div>
 
                         </div>
@@ -113,8 +161,8 @@
                                                         method="post">
                                                         @csrf
                                                         @method('PUT')
-                                                        <input type="text" value="{{ $category->name }}" name="name"
-                                                            class="mb-2 w-full input input-bordered">
+                                                        <input type="text" value="{{ $category->name }}"
+                                                            name="name" class="mb-2 w-full input input-bordered">
                                                         <button type="submit"
                                                             class="btn btn-success w-full mt-2">Edit</button>
                                                     </form>

@@ -35,6 +35,13 @@ Route::middleware('admin')->group(function () {
     Route::post("/category-admin-store", [CategoryController::class, "store"]);
     Route::delete("/category-admin-delete/{id}", [CategoryController::class, "destroy"]);
     Route::put("/category-admin-update/{id}", [CategoryController::class, "update"]);
+    Route::post("/restore-category/{id}", [CategoryController::class, "restoreCategory"]);
+    Route::delete("/delete-permanent-category/{id}", [CategoryController::class, "deletedPermanent"]);
+    Route::post("/user-admin-store", [UserController::class, "store"])->name('storeUser');
+    Route::delete("/user-admin-delete/{id}", [UserController::class, "destroy"]);
+    Route::put("/user-admin-update/{id}", [UserController::class, "update"]);
+    Route::post("/user-admin-restore/{id}", [UserController::class, "restoreUser"]);
+    Route::delete("/user-admin-trash/{id}", [UserController::class, "deletedPermanent"]);
 });
 
 Route::middleware('bank')->group(function () {

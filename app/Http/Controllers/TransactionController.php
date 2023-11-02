@@ -100,6 +100,17 @@ class TransactionController extends Controller
 
         foreach ($transactionKeranjang as $ts) {
             $totalBayar += ($ts->price * $ts->quantity);
+            $produk = $ts->products;
+            $jumlah_dibeli = $ts->quantity;
+            $stok_saat_ini = $ts->products->stock;
+
+            if ($stok_saat_ini >= $jumlah_dibeli) {
+                $stok_baru = $stok_saat_ini - $jumlah_dibeli;
+                $produk->stock = $stok_baru;
+                $produk->save();
+            } else {
+                return redirect()->back()->with("message_keranjang", "stock $produk->name kurang");
+            }
         }
 
         if ($transactionKeranjang->count() == 0) return redirect()->back()->with("message_keranjang", "keranjang kosong");
@@ -120,6 +131,17 @@ class TransactionController extends Controller
                 'debit' => $wallet->debit + ($totalBayar - $hapus),
             ]);
             return redirect()->back()->with("message_keranjang", "$nama_hapus gagal beli barang dihapus");
+        } else {
+            Transaction::where("users_id", Auth::user()->id)
+                ->where("status", "dikeranjang")
+                ->update([
+                    'status' => 'dibayar',
+                    'order_code' => $order_code
+                ]);
+            $wallet->update([
+                'debit' => $wallet->debit + $totalBayar,
+            ]);
+            return redirect()->back();
         }
 
         if ($difference < $totalBayar) return redirect()->back()->with("message_keranjang", "saldo tidak cukup");
@@ -151,6 +173,7 @@ class TransactionController extends Controller
         $wallet->update([
             'debit' => $wallet->debit + $totalBayar,
         ]);
+
 
         return redirect()->back();
     }

@@ -26,22 +26,22 @@
 
 @section('content')
     <div class="container mx-auto">
-        <div class="flex flex-col w-full bg-white p-4 rounded-lg h-full">
+        <div class="flex flex-col w-full bg-white p-4 rounded-lg h-full border border-slate-300 text-black">
             <span class="text-2xl">Hello, {{ $user->roles->name }} 👋</span>
             <div class="flex justify-between my-4">
                 <div class="flex gap-2 items-center ">
-                    <span class="text-lg text-slate-400">Filter By</span>
-                    <select id="dropdown" class="border rounded p-2 px-3">
+                    <span class="text-lg">Filter By</span>
+                    <select id="dropdown" class="border rounded p-2 px-3 bg-white">
                         <option class="selectedValue" value="asc">terbaru</option>
                         <option class="selectedValue " value="desc">terlama</option>
                     </select>
-                    <select id="category" class="border rounded p-2 px-3">
+                    <select id="category" class="border rounded p-2 px-3 bg-white">
                         <option class="selectedCategory" value="1">minuman</option>
                         <option class="selectedCategory" value="2">makanan</option>
                         <option class="selectedCategory" value="3">pakaian</option>
                     </select>
                 </div>
-                <div class="flex">
+                <div class="flex gap-2">
                     <a href="#my_modal_add" class="btn btn-success">Add Product</a>
                     <a href="#my_modal_delete" class="btn btn-error">Trash</a>
                     <div class="modal" id="my_modal_delete">
