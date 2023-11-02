@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
@@ -80,17 +82,26 @@ class UserApiController extends Controller
             'message' => 'not logged in',
         ], 200);
 
-        $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
-        $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->get();
+        $transactionsKeranjang = Transaction::with("products")
+            ->where("users_id", Auth::user()->id)
+            ->where("status", "dikeranjang")
+            ->withTrashed()
+            ->get();
+
+        $transactionsBayar = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dibayar")->withTrashed()->get();
+        $categories = Category::all();
 
         $wallets = Wallet::with("user")->get();
         $wallet_count = Wallet::with("user")->where("status", "selesai")->count();
         $wallet_bank = Wallet::with("user")->where("status", "selesai")->get();
 
         $user = Auth::user();
+        $user_deleted = User::onlyTrashed()->get();
+        $roles = Role::all();
         $users = User::with("roles")->get();
         $nasabah = User::where("roles_id", "4")->count();
-        $products = Product::with("transaction")->get();
+        $product_deleted = Product::onlyTrashed()->get();
+        $products = Product::with("transaction")->withTrashed()->get();
 
         $wallet = Wallet::where("users_id", Auth::user()->id)->where("status", "selesai")->get();
         $creditTotal = $wallet->sum('credit');
@@ -101,7 +112,6 @@ class UserApiController extends Controller
 
         $difference = $creditTotal - $debitTotal;
         $difference_bank = $credit_bank - $debit_bank;
-
         $filter = $request->filter;
         $category = $request->category;
 
@@ -119,7 +129,10 @@ class UserApiController extends Controller
             'products' => $products,
             'transactionsKeranjang' => $transactionsKeranjang,
             'transactionsBayar' => $transactionsBayar,
-            'users' => $users
+            'users' => $users,
+            'wallet_count' => $wallet_count,
+            'roles' => $roles,
+            'user_deleted' => $user_deleted
         ], 200);
 
         if ($user->roles_id == 2) return response()->json([
@@ -129,7 +142,9 @@ class UserApiController extends Controller
             'balance' => $difference,
             'products' => $products,
             'transactionsKeranjang' => $transactionsKeranjang,
-            'transactionsBayar' => $transactionsBayar
+            'transactionsBayar' => $transactionsBayar,
+            'categories' => $categories,
+            'product_deleted' => $product_deleted
         ], 200);
 
         if ($user->roles_id == 3) return response()->json([
@@ -149,6 +164,86 @@ class UserApiController extends Controller
             'products' => $products,
             'transactionsKeranjang' => $transactionsKeranjang,
             'transactionsBayar' => $transactionsBayar
+        ], 200);
+    }
+
+    public function store(Request $request)
+    {
+        $checkUsername = User::withTrashed()->where('name', $request->name)->first();
+        if ($checkUsername)
+            return response()->json([
+                'message' => 'nama sudah digunakan'
+            ], 404);
+        $user = User::create([
+            'name' => $request->name,
+            'password' => $request->password,
+            'roles_id' => $request->roles_id
+        ]);
+
+        return response()->json([
+            'message' => 'store user',
+            'data' => $user
+        ], 200);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::find($id);
+        $checkUsername = User::withTrashed()->where('name', $request->name)->first();
+        if ($checkUsername && $request->name != $user->name)
+            return response()->json([
+                'message' => 'nama sudah digunakan'
+            ], 404);
+
+        if ($request->password == null || $request->password == "") {
+            $user->update([
+                'name' => $request->name,
+                'roles_id' => $request->roles_id
+            ]);
+            return response()->json([
+                'message' => 'success update user',
+                'data' => $user
+            ], 200);
+        } else {
+            $user->update([
+                'name' => $request->name,
+                'password' => $request->password,
+                'roles_id' => $request->roles_id
+            ]);
+            return response()->json([
+                'message' => 'success update user',
+                'data' => $user
+            ], 200);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return response()->json([
+            'message' => 'success delete user',
+            'data' => $user
+        ], 200);
+    }
+
+    public function restoreUser($id)
+    {
+        $user = User::onlyTrashed()->find($id);
+        $user->restore();
+        return response()->json([
+            'message' => 'success restore user',
+            'data' => $user
+        ], 200);
+    }
+
+    public function deletedPermanent($id)
+    {
+        $userToDelete = User::onlyTrashed()->find($id);
+        $userToDelete->forceDelete();
+        return response()->json([
+            'message' => 'success delete permanent user',
+            'data' => $userToDelete
         ], 200);
     }
 }

@@ -48,7 +48,6 @@ Route::middleware('bank')->group(function () {
     Route::get("/bank", [UserController::class, "index"]);
     Route::get("/report-bank", [TransactionController::class, 'reportList']);
     Route::put("/topup/{id}", [WalletController::class, "topUpSuccess"]);
-    Route::get("/user", [UserController::class, "listUsers"]);
 });
 
 Route::middleware('kantin')->group(function () {
