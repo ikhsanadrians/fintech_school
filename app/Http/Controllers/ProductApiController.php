@@ -26,15 +26,17 @@ class ProductApiController extends Controller
 
     public function store(Request $request)
     {
+        $date = now()->format("dmYHis");
+        $photoPath = "/photos/$date.png";
         if ($request->hasFile('photo')) {
-            $request->file('photo')->move("photos/", "$request->name.png");
+            $request->file('photo')->move("photos/", "$date.png");
         }
 
         $product = Product::create([
             "name" => $request->name,
             "price" => $request->price,
             "stock" => $request->stock,
-            "photo" => "/photos/$request->name.png",
+            "photo" => $photoPath,
             "desc" => $request->desc,
             "categories_id" => $request->categories_id,
             "stand" => $request->stand,
@@ -73,21 +75,25 @@ class ProductApiController extends Controller
         $product = Product::find($id);
 
         $productImagePath = $product->photo;
+        $date = now()->format("dmYHis");
 
         if ($request->hasFile('photo')) {
-            $request->file('photo')->move("photos/", "$request->name.png");
+            $request->file('photo')->move("photos/", "$date.png");
             if (!unlink(public_path($productImagePath))) {
                 Storage::delete($product->photo);
             } else {
                 Storage::delete($product->photo);
             }
+            $photoPath = "/photos/$date.png";
+        } else {
+            $photoPath = $product->photo;
         }
 
         $product->update([
             "name" => $request->name,
             "price" => $request->price,
             "stock" => $request->stock,
-            "photo" => "/photos/$request->name.png",
+            "photo" => $photoPath,
             "desc" => $request->desc,
             "categories_id" => $request->categories_id,
             "stand" => $request->stand
@@ -100,22 +106,22 @@ class ProductApiController extends Controller
     }
 
 
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
         $productToDelete = Product::withTrashed()->find($id);
 
-        $productImagePath = $productToDelete->photo;
+        if (!is_null($productToDelete)) {
+            $photoPath = $productToDelete->photo;
 
-        if ($request->hasFile('photo')) {
-            $request->file('photo')->move("photos/", "$request->name.png");
-            if (!unlink(public_path($productImagePath))) {
-                Storage::delete($productToDelete->photo);
-            } else {
-                Storage::delete($productToDelete->photo);
+            if (!empty($photoPath)) {
+                if (!unlink(public_path($photoPath))) {
+                    Storage::delete($productToDelete->photo);
+                } else {
+                    Storage::delete($productToDelete->photo);
+                }
             }
+            $productToDelete->delete();
         }
-
-        $productToDelete->delete();
 
         return response()->json([
             'message' => 'delete product',
