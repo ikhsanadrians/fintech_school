@@ -28,26 +28,26 @@ class UserApiController extends Controller
         ], 404);
 
         if (Auth::user()->roles_id == 1) return response()->json([
-            'message' => 'success login admin',
+            'message' => 'admin',
             'data' => $validate,
             'token' => $token
         ], 200);
 
         if (Auth::user()->roles_id == 2) return response()->json([
-            'message' => 'success login kantin',
+            'message' => 'kantin',
             'data' => $validate,
             'token' => $token
         ], 200);
 
         if (Auth::user()->roles_id == 3) return response()->json([
-            'message' => 'success login bank',
+            'message' => 'bank',
             'data' => $validate,
             'token' => $token
         ], 200);
 
 
         return response()->json([
-            'message' => 'success login siswa',
+            'message' => 'siswa',
             'data' => $validate,
             'token' => $token
         ], 200);
@@ -167,6 +167,15 @@ class UserApiController extends Controller
         ], 200);
     }
 
+    public function createUser()
+    {
+        $roles = Role::all();
+
+        return response()->json([
+            "data" => $roles
+        ], 200);
+    }
+
     public function store(Request $request)
     {
         $checkUsername = User::withTrashed()->where('name', $request->name)->first();
@@ -198,6 +207,7 @@ class UserApiController extends Controller
         if ($request->password == null || $request->password == "") {
             $user->update([
                 'name' => $request->name,
+                'password' => $user->password,
                 'roles_id' => $request->roles_id
             ]);
             return response()->json([
@@ -224,6 +234,15 @@ class UserApiController extends Controller
         return response()->json([
             'message' => 'success delete user',
             'data' => $user
+        ], 200);
+    }
+
+    public function edit()
+    {
+        $roles = Role::all();
+
+        return response()->json([
+            "data" => $roles
         ], 200);
     }
 

@@ -17,7 +17,7 @@
                     @foreach ($products as $key => $product)
                         <div class="lg:w-[30%] md:w-1/2 w-full p-2">
                             <div class="bg-gray-50 rounded-lg shadow-md border border-slate-300">
-                                <img src="{{ $product->photo }}" alt="{{ $product->name }}"
+                                <img src="{{ $product->photo }}" alt="{{ $product->photo }}"
                                     class="w-full h-48 object-cover rounded-t-lg">
                                 <div class="p-4">
                                     <div class="text-lg font-semibold">

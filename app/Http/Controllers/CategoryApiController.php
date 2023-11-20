@@ -10,12 +10,12 @@ class CategoryApiController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $categories_delete = Category::onlyTrashed()->get();
+        // $categories_delete = Category::onlyTrashed()->get();
 
         return response()->json([
             'message' => 'index category',
             'categories' => $categories,
-            'categories_delete' => $categories_delete
+            // 'categories_delete' => $categories_delete
         ], 200);
     }
 

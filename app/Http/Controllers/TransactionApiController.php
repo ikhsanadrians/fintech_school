@@ -22,16 +22,20 @@ class TransactionApiController extends Controller
         $creditTotal = $walletSelesai->sum('credit');
         $debitTotal = $walletSelesai->sum('debit');
         $difference = $creditTotal - $debitTotal;
+        $totalPrice = 0;
+
+        foreach ($transactionsKeranjang as $ts) {
+            $totalPrice += $ts->price * $ts->quantity;
+        }
 
         return response()->json([
             'message' => 'index transaction',
             'transactionsKeranjang' => $transactionsKeranjang,
+            'totalPrice' => $totalPrice,
             'laporanPembayaran' => $laporanPembayaran,
             'transactionsBayar' => $transactionsBayar,
             'walletSelesai' => $walletSelesai,
             'walletProcess' => $walletProcess,
-            'creditTotal' => $creditTotal,
-            'debitTotal' => $debitTotal,
             'difference' => $difference,
         ], 200);
     }
@@ -85,7 +89,7 @@ class TransactionApiController extends Controller
 
         return response()->json([
             'message' => 'report list',
-            'laporanPemBayaran' => $laporanPembayaran
+            'laporanPembayaran' => $laporanPembayaran
         ], 200);
     }
 
@@ -275,9 +279,14 @@ class TransactionApiController extends Controller
     {
         $report = Transaction::with("products")->where("order_code", $order_code)->get();
         $code = $order_code;
+        $totalPrice = 0;
+        foreach ($report as $rep) {
+            $totalPrice += $rep->price * $rep->quantity;
+        }
 
         return response()->json([
             'message' => 'success download report',
+            'totalPrice' => $totalPrice,
             'report' => $report,
             'code' => $code
         ], 200);

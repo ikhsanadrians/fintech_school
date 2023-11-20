@@ -151,11 +151,12 @@
                             <tr class="border-b border-gray-200">
                                 <td class="p-2 text-center">{{ $key + 1 }}</td>
                                 <td class="p-2 flex justify-center">
+                                    {{-- {{ $product->photo }} --}}
                                     @if ($product->photo)
                                         <img src="{{ $product->photo }}" alt="none" class="object-cover rounded"
                                             width="100" height="100">
                                     @else
-                                        <img src="{{ asset("photos/$product->name.png") }}" alt="none"
+                                        <img src="{{ asset("photos/$product->photo.png") }}" alt="none"
                                             class="object-cover rounded w-8 h-8" width="100" height="100">
                                     @endif
                                 </td>

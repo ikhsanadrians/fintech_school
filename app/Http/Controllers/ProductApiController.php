@@ -69,6 +69,15 @@ class ProductApiController extends Controller
         ], 200);
     }
 
+    public function edit($id)
+    {
+        $products = Product::withTrashed()->find($id);
+
+        return response()->json([
+            'data' => $products
+        ], 200);
+    }
+
 
     public function update(Request $request, $id)
     {

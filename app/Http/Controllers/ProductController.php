@@ -46,7 +46,7 @@ class ProductController extends Controller
         ]);
 
 
-        return redirect("/kantin");
+        return redirect()->back();
     }
 
 
