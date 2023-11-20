@@ -42,7 +42,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::delete("/delete-permanent-category/{id}", [CategoryApiController::class, "deletedPermanent"]);
 
     // Admin user endpoints
-    Route::get("/user-admin-create", [UserApiController::class, "create"]);
+    Route::get("/user-admin-create", [UserApiController::class, "createUser"]);
     Route::post("/user-admin-store", [UserApiController::class, "store"])->name('storeUser');
     Route::delete("/user-admin-delete/{id}", [UserApiController::class, "destroy"]);
     Route::get("/user-admin-edit", [UserApiController::class, "edit"]);
