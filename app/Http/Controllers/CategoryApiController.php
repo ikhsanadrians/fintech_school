@@ -43,6 +43,15 @@ class CategoryApiController extends Controller
         ], 200);
     }
 
+    public function edit($id)
+    {
+        $category = Category::find($id);
+
+        return response()->json([
+            "data" => $category
+        ], 200);
+    }
+
     public function update(Request $request, $id)
     {
         $category = Category::find($id);

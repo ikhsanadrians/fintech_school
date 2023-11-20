@@ -38,6 +38,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::post("/category-admin-store", [CategoryApiController::class, "store"]);
     Route::delete("/category-admin-delete/{id}", [CategoryApiController::class, "destroy"]);
     Route::put("/category-admin-update/{id}", [CategoryApiController::class, "update"]);
+    Route::get("/category-admin-edit/{id}", [CategoryApiController::class, "update"]);
     Route::post("/restore-category/{id}", [CategoryApiController::class, "restoreCategory"]);
     Route::delete("/delete-permanent-category/{id}", [CategoryApiController::class, "deletedPermanent"]);
 
@@ -45,7 +46,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get("/user-admin-create", [UserApiController::class, "createUser"]);
     Route::post("/user-admin-store", [UserApiController::class, "store"])->name('storeUser');
     Route::delete("/user-admin-delete/{id}", [UserApiController::class, "destroy"]);
-    Route::get("/user-admin-edit", [UserApiController::class, "edit"]);
+    Route::get("/user-admin-edit/{id}", [UserApiController::class, "edit"]);
     Route::put("/user-admin-update/{id}", [UserApiController::class, "update"]);
     Route::post("/user-admin-restore/{id}", [UserApiController::class, "restoreUser"]);
     Route::delete("/user-admin-trash/{id}", [UserApiController::class, "deletedPermanent"]);

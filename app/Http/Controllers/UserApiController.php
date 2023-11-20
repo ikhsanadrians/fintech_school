@@ -237,12 +237,14 @@ class UserApiController extends Controller
         ], 200);
     }
 
-    public function edit()
+    public function edit($id)
     {
+        $user = User::find($id);
         $roles = Role::all();
 
         return response()->json([
-            "data" => $roles
+            "user" => $user,
+            "roles" => $roles
         ], 200);
     }
 
