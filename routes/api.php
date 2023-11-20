@@ -33,24 +33,22 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get("/report-admin", [TransactionApiController::class, 'reportList']);
     Route::get("/transaction-admin", [TransactionApiController::class, "transactionList"]);
 
-    Route::group(function () {
-        // Admin category endpoints
-        Route::get("/category-admin", [CategoryApiController::class, "index"]);
-        Route::post("/category-admin-store", [CategoryApiController::class, "store"]);
-        Route::delete("/category-admin-delete/{id}", [CategoryApiController::class, "destroy"]);
-        Route::put("/category-admin-update/{id}", [CategoryApiController::class, "update"]);
-        Route::post("/restore-category/{id}", [CategoryApiController::class, "restoreCategory"]);
-        Route::delete("/delete-permanent-category/{id}", [CategoryApiController::class, "deletedPermanent"]);
+    // Admin category endpoints
+    Route::get("/category-admin", [CategoryApiController::class, "index"]);
+    Route::post("/category-admin-store", [CategoryApiController::class, "store"]);
+    Route::delete("/category-admin-delete/{id}", [CategoryApiController::class, "destroy"]);
+    Route::put("/category-admin-update/{id}", [CategoryApiController::class, "update"]);
+    Route::post("/restore-category/{id}", [CategoryApiController::class, "restoreCategory"]);
+    Route::delete("/delete-permanent-category/{id}", [CategoryApiController::class, "deletedPermanent"]);
 
-        // Admin user endpoints
-        Route::post("/user-admin-create", [UserApiController::class, "create"]);
-        Route::post("/user-admin-store", [UserApiController::class, "store"])->name('storeUser');
-        Route::delete("/user-admin-delete/{id}", [UserApiController::class, "destroy"]);
-        Route::get("/user-admin-edit", [UserApiController::class, "edit"]);
-        Route::put("/user-admin-update/{id}", [UserApiController::class, "update"]);
-        Route::post("/user-admin-restore/{id}", [UserApiController::class, "restoreUser"]);
-        Route::delete("/user-admin-trash/{id}", [UserApiController::class, "deletedPermanent"]);
-    });
+    // Admin user endpoints
+    Route::post("/user-admin-create", [UserApiController::class, "create"]);
+    Route::post("/user-admin-store", [UserApiController::class, "store"])->name('storeUser');
+    Route::delete("/user-admin-delete/{id}", [UserApiController::class, "destroy"]);
+    Route::get("/user-admin-edit", [UserApiController::class, "edit"]);
+    Route::put("/user-admin-update/{id}", [UserApiController::class, "update"]);
+    Route::post("/user-admin-restore/{id}", [UserApiController::class, "restoreUser"]);
+    Route::delete("/user-admin-trash/{id}", [UserApiController::class, "deletedPermanent"]);
 
     // Bank endpoints
     Route::get("/bank", [UserApiController::class, "index"]);
