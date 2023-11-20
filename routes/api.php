@@ -19,7 +19,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get("/report/all", [TransactionApiController::class, "downloadAll"]);
     Route::get("/get-product-siswa", [ProductApiController::class, "allProduct"]);
 
-    // Product endpoints
+    // User-Product endpoints
     Route::post("/addcart", [TransactionApiController::class, 'addToCart'])->name("addToCart");
     Route::put("/payproduct", [TransactionApiController::class, 'payProduct'])->name("payProduct");
     Route::delete("/keranjang/delete/{id}", [TransactionApiController::class, 'cancelCart']);
