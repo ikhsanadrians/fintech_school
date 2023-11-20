@@ -48,6 +48,24 @@ class ProductApiController extends Controller
         ], 200);
     }
 
+    public function storeUrl(Request $request)
+    {
+        $product = Product::create([
+            "name" => $request->name,
+            "price" => $request->price,
+            "stock" => $request->stock,
+            "photo" => $request->photo,
+            "desc" => $request->desc,
+            "categories_id" => $request->categories_id,
+            "stand" => $request->stand,
+        ]);
+
+        return response()->json([
+            'message' => 'store product',
+            'data' => $product
+        ], 200);
+    }
+
 
     public function show($id)
     {
@@ -114,6 +132,25 @@ class ProductApiController extends Controller
         ], 200);
     }
 
+    public function updateProductUrl(Request $request, $id)
+    {
+        $product = Product::find($id);
+        $product->update([
+            "name" => $request->name,
+            "price" => $request->price,
+            "stock" => $request->stock,
+            "photo" => $request->photo,
+            "desc" => $request->desc,
+            "categories_id" => $request->categories_id,
+            "stand" => $request->stand
+        ]);
+
+        return response()->json([
+            'message' => 'update product',
+            'data' => $product
+        ], 200);
+    }
+
 
     public function destroy($id)
     {
@@ -131,6 +168,18 @@ class ProductApiController extends Controller
             }
             $productToDelete->delete();
         }
+
+        return response()->json([
+            'message' => 'delete product',
+            'data' => $productToDelete
+        ], 200);
+    }
+
+    public function destroyProductUrl($id)
+    {
+        $productToDelete = Product::withTrashed()->find($id);
+
+        $productToDelete->delete();
 
         return response()->json([
             'message' => 'delete product',
