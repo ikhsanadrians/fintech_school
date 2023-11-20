@@ -17,6 +17,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::post("/logout", [UserApiController::class, 'logout'])->name("logout");
     Route::get("/history/{order_code}", [TransactionApiController::class, 'downloadReport']);
     Route::get("/report/all", [TransactionApiController::class, "downloadAll"]);
+    Route::get("/get-product-siswa", [ProductApiController::class, "allProduct"]);
 
     // Product endpoints
     Route::post("/addcart", [TransactionApiController::class, 'addToCart'])->name("addToCart");
@@ -25,7 +26,6 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get("/history", [TransactionApiController::class, 'index']);
     Route::delete("/history-clear", [TransactionApiController::class, 'clearHistoryBuy'])->name('clearHistoryBuy');
     Route::post("/topup", [WalletApiController::class, "topUp"])->name("topUp");
-    Route::get("/category-product", [ProductApiController::class, "allProduct"]);
     Route::get("/product/{id}", [ProductApiController::class, "show"]);
 
     // Admin endpoints

@@ -90,9 +90,11 @@ class ProductApiController extends Controller
     public function edit($id)
     {
         $products = Product::withTrashed()->find($id);
+        $categories = Category::all();
 
         return response()->json([
-            'data' => $products
+            'products' => $products,
+            'categories' => $categories
         ], 200);
     }
 
