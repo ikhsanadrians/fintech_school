@@ -213,8 +213,6 @@ class ProductApiController extends Controller
             'difference' => $difference,
             'transactionsKeranjang' => $transactionsKeranjang,
         ], 200);
-
-        return view("category_product", compact("products", "difference", "transactionsKeranjang"));
     }
 
     public function restoreProduct($id)

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("name");
             $table->double("price");
             $table->integer("stock");
-            $table->text("photo");
+            $table->text("photo")->nullable();
             $table->text("desc");
             $table->foreignId("categories_id")->constrained()->onDelete("CASCADE");
             $table->char("stand");

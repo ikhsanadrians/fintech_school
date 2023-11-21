@@ -38,7 +38,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::post("/category-admin-store", [CategoryApiController::class, "store"]);
     Route::delete("/category-admin-delete/{id}", [CategoryApiController::class, "destroy"]);
     Route::put("/category-admin-update/{id}", [CategoryApiController::class, "update"]);
-    Route::get("/category-admin-edit/{id}", [CategoryApiController::class, "update"]);
+    Route::get("/category-admin-edit/{id}", [CategoryApiController::class, "edit"]);
     Route::post("/restore-category/{id}", [CategoryApiController::class, "restoreCategory"]);
     Route::delete("/delete-permanent-category/{id}", [CategoryApiController::class, "deletedPermanent"]);
 
