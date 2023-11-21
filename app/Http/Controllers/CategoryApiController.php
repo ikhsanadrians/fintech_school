@@ -10,7 +10,7 @@ class CategoryApiController extends Controller
     public function index()
     {
         $categories = Category::all();
-        // $categories_delete = Category::onlyTrashed()->get();
+        // $categories_delete = Category::withTrashed()->get();
 
         return response()->json([
             'message' => 'index category',
@@ -68,7 +68,7 @@ class CategoryApiController extends Controller
 
     public function deletedPermanent($id)
     {
-        $categoryDelete = Category::onlyTrashed()->find($id);
+        $categoryDelete = Category::withTrashed()->find($id);
         $categoryDelete->forceDelete();
 
         return response()->json([
@@ -79,7 +79,7 @@ class CategoryApiController extends Controller
 
     public function restoreCategory($id)
     {
-        $product = Category::onlyTrashed()->find($id);
+        $product = Category::withTrashed()->find($id);
         $product->restore();
 
         return response()->json([

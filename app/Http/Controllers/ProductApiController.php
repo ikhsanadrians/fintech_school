@@ -189,6 +189,18 @@ class ProductApiController extends Controller
         ], 200);
     }
 
+    public function deletedPermanentUrl($id)
+    {
+        $productToDelete = Product::withTrashed()->find($id);
+
+        $productToDelete->forceDelete();
+
+        return response()->json([
+            'message' => 'delete product',
+            'data' => $productToDelete
+        ], 200);
+    }
+
     public function allProduct(Request $request)
     {
         $transactionsKeranjang = Transaction::with("products")->where("users_id", Auth::user()->id)->where("status", "dikeranjang")->get();
@@ -212,12 +224,13 @@ class ProductApiController extends Controller
             'products' => $products,
             'difference' => $difference,
             'transactionsKeranjang' => $transactionsKeranjang,
+            'transactionsBayar' => $transactionsBayar,
         ], 200);
     }
 
     public function restoreProduct($id)
     {
-        $product = Product::onlyTrashed()->find($id);
+        $product = Product::withTrashed()->find($id);
 
         $product->restore();
 
@@ -230,7 +243,7 @@ class ProductApiController extends Controller
     public function deletedPermanent($id)
     {
         try {
-            $productToDelete = Product::onlyTrashed()->find($id);
+            $productToDelete = Product::withTrashed()->find($id);
 
             $productImagePath = $productToDelete->photo;
 

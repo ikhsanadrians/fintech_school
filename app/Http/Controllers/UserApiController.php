@@ -260,7 +260,7 @@ class UserApiController extends Controller
 
     public function deletedPermanent($id)
     {
-        $userToDelete = User::onlyTrashed()->find($id);
+        $userToDelete = User::withTrashed()->find($id);
         $userToDelete->forceDelete();
         return response()->json([
             'message' => 'success delete permanent user',

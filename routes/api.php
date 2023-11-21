@@ -49,7 +49,7 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get("/user-admin-edit/{id}", [UserApiController::class, "edit"]);
     Route::put("/user-admin-update/{id}", [UserApiController::class, "update"]);
     Route::post("/user-admin-restore/{id}", [UserApiController::class, "restoreUser"]);
-    Route::delete("/user-admin-trash/{id}", [UserApiController::class, "deletedPermanent"]);
+    Route::delete("/user-admin-delete-permanent/{id}", [UserApiController::class, "deletedPermanent"]);
 
     // Bank endpoints
     Route::get("/bank", [UserApiController::class, "index"]);
@@ -70,4 +70,5 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::put("/transaction-kantin/{id}", [TransactionApiController::class, "takeOrder"]);
     Route::post("/restore-kantin/{id}", [ProductApiController::class, "restoreProduct"]);
     Route::delete("/delete-permanent-kantin/{id}", [ProductApiController::class, "deletedPermanent"]);
+    Route::delete("/delete-permanent-kantin-url/{id}", [ProductApiController::class, "deletedPermanent"]);
 });

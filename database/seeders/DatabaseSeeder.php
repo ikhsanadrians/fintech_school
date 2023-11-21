@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
             "price" => 5000,
             "stock" => 100,
             "desc" => "desc lemon es rrq lemon",
-            "photo" => "/photos/bakso.png",
+            "photo" => "/photos/lemon.png",
             "categories_id" => 1,
             "stand" => 2,
             "created_at" => "2023-10-25 01:50:58"
@@ -89,20 +89,10 @@ class DatabaseSeeder extends Seeder
             "price" => 10000,
             "stock" => 50,
             "desc" => "desc bakso evos bakso",
-            "photo" => "/photos/clg1.png",
+            "photo" => "/photos/bakso.png",
             "categories_id" => 2,
             "stand" => 1,
             "created_at" => "2023-10-25 01:50:59"
-        ]);
-        Product::create([
-            "name" => "baju hypebeast",
-            "price" => 3000,
-            "stock" => 10,
-            "desc" => "desc baju hypebeast evos baju hypebeast",
-            "photo" => "/photos/clg2.png",
-            "categories_id" => 3,
-            "stand" => 4,
-            "created_at" => "2023-10-25 01:50:52"
         ]);
         Product::create([
             "name" => "celana hypebeast",
@@ -115,11 +105,21 @@ class DatabaseSeeder extends Seeder
             "created_at" => "2023-10-25 01:50:51"
         ]);
         Product::create([
+            "name" => "baju hypebeast",
+            "price" => 3000,
+            "stock" => 10,
+            "desc" => "desc baju hypebeast evos baju hypebeast",
+            "photo" => "/photos/clg2.png",
+            "categories_id" => 3,
+            "stand" => 4,
+            "created_at" => "2023-10-25 01:50:52"
+        ]);
+        Product::create([
             "name" => "topi hypebeast",
             "price" => 200000,
             "stock" => 60,
             "desc" => "desc topi hypebeast evos topi hypebeast",
-            "photo" => "/photos/lemon.png",
+            "photo" => "/photos/clg1.png",
             "categories_id" => 3,
             "stand" => 4,
             "created_at" => "2023-10-25 01:50:40"
