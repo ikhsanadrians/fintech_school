@@ -89,7 +89,9 @@ class DatabaseSeeder extends Seeder
             "price" => 10000,
             "stock" => 50,
             "desc" => "desc bakso evos bakso",
-            "photo" => "/photos/bakso.png",
+            "photo" => "/photo
+            
+            s/bakso.png",
             "categories_id" => 2,
             "stand" => 1,
             "created_at" => "2023-10-25 01:50:59"
@@ -131,12 +133,12 @@ class DatabaseSeeder extends Seeder
             "debit" => NULL,
             "status" => "selesai"
         ]);
-        Wallet::create([
-            "users_id" => 4,
-            "credit" => NULL,
-            "debit" => 15000,
-            "status" => "selesai"
-        ]);
+        // Wallet::create([
+        //     "users_id" => 4,
+        //     "credit" => NULL,
+        //     "debit" => 15000,
+        //     "status" => "selesai"
+        // ]);
 
         Transaction::create([
             "users_id" => 4,

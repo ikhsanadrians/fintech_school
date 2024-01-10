@@ -95,7 +95,9 @@ class TransactionApiController extends Controller
 
     public function payProduct()
     {
-        $wallet = Wallet::where("users_id", Auth::user()->id)->first();
+        $wallet = Wallet::where("users_id", Auth::user()->id)->get();
+
+        
         $creditTotal = $wallet->sum('credit');
         $debitTotal = $wallet->sum('debit');
         $difference = $creditTotal - $debitTotal;
